@@ -10,6 +10,7 @@ public class Materia {
     ArrayList<String> estudiantes;
     ArrayList<Integer> docentes;
     int cupo;
+    Carrera materiasDeLaCarrera;
 
     public Materia(String nombreCarrera, String nombreMateria) {
         this.nombreCarrera = nombreCarrera;
@@ -18,6 +19,7 @@ public class Materia {
         this.estudiantes = new ArrayList<>();
         this.docentes = new ArrayList<>();
         this.cupo = 0;
+        this.materiasDeLaCarrera = new Carrera(nombreCarrera);
     }
 
     // Getters
@@ -44,5 +46,9 @@ public class Materia {
     public int getCupo() {
         return this.cupo;
     }
+
+    public Carrera getMateriasDeLaCarrera() {
+        return this.materiasDeLaCarrera;
+    }    
 
 }
