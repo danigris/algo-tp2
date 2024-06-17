@@ -91,7 +91,22 @@ public class SistemaSIU {
     }
 
     public void inscribir(String estudiante, String carrera, String materia) {
-        throw new UnsupportedOperationException("Método no implementado aún");
+        Carrera carreraActual = sistema.obtener(carrera);
+        Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+        materiaActual.cursada.estudiantes.add(estudiante);
+        materiaActual.cursada.inscriptos++;
+
+        // Sumo inscripcion al estudiante actual
+        Integer totalPrevio = this.inscripcionesPorEstudiante.obtener(estudiante);
+        this.inscripcionesPorEstudiante.definir(estudiante, totalPrevio + 1);
+
+    }
+
+    public int inscriptos(String materia, String carrera) {
+        Carrera carreraActual = sistema.obtener(carrera);
+        Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+
+        return materiaActual.cursada.inscriptos;
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia) {
@@ -103,10 +118,6 @@ public class SistemaSIU {
     }
 
     public void cerrarMateria(String materia, String carrera) {
-        throw new UnsupportedOperationException("Método no implementado aún");
-    }
-
-    public int inscriptos(String materia, String carrera) {
         throw new UnsupportedOperationException("Método no implementado aún");
     }
 
