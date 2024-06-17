@@ -6,19 +6,13 @@ public class Materia {
 
     String nombreCarrera;
     String nombreMateria;
-    ArrayList<String> equivalentes; // esto tiene que cambiarse a un trie<string> (sin values! es un trie generico)
-    ArrayList<String> estudiantes;
-    ArrayList<Integer> docentes;
-    int cupo;
-    Carrera materiasDeLaCarrera;
+    Cursada cursada; // Referencia a la data compartida de materias equivalentes por aliasing
+    Carrera materiasDeLaCarrera; // Referencia a la carrera que contiene esta materia
 
-    public Materia(String nombreCarrera, String nombreMateria) {
+    public Materia(String nombreCarrera, String nombreMateria, Cursada cursada) {
         this.nombreCarrera = nombreCarrera;
         this.nombreMateria = nombreMateria;
-        this.equivalentes = new ArrayList<>();
-        this.estudiantes = new ArrayList<>();
-        this.docentes = new ArrayList<>();
-        this.cupo = 0;
+        this.cursada = cursada;
         this.materiasDeLaCarrera = new Carrera(nombreCarrera);
     }
 
@@ -31,24 +25,21 @@ public class Materia {
         return this.nombreCarrera;
     }
 
-    public ArrayList<String> getEquivalentes() {
-        return this.equivalentes;
-    }
-
-    public ArrayList<String> getEstudiantes() {
-        return this.estudiantes;
-    }
-
-    public ArrayList<Integer> getDocentes() {
-        return this.docentes;
-    }
-
-    public int getCupo() {
-        return this.cupo;
-    }
+    public Cursada getCursada() {
+        return this.cursada;
+    }   
 
     public Carrera getMateriasDeLaCarrera() {
         return this.materiasDeLaCarrera;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" \n-Info Clase Materia: \n");
+        sb.append("Carrera: ").append(nombreCarrera).append("\nMateria: ").append(nombreMateria).append("\n");
+        sb.append(cursada.toString()); 
+        return sb.toString();      
     }    
 
 }

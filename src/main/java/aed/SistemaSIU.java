@@ -25,9 +25,15 @@ public class SistemaSIU {
 
     private void inicializarSistema(InfoMateria[] infoMaterias) {
 
-        for (InfoMateria info : infoMaterias) {
-            // Extraigo los pares de cada InfoMateria y la data de carrera y nombreMateria de cada ParCarreraMateria
-            ParCarreraMateria[] pares = info.getParesCarreraMateria();
+        for (InfoMateria equivalentes : infoMaterias) {
+
+            // Extraigo los pares de cada InfoMateria 
+            ParCarreraMateria[] pares = equivalentes.getParesCarreraMateria();
+            // Instancio el Objeto Cursada para las materias equivalentes, tomando el primer nombre de materia de los pares como el estandar
+            String nombreMateriaEstandar = pares[0].getNombreMateria();
+            Cursada cursada = new Cursada(nombreMateriaEstandar);
+
+            // Extraigo la data de carrera y nombreMateria de cada ParCarreraMateria
             for (ParCarreraMateria par : pares) {
                 String nombreCarrera = par.getCarrera();
                 String nombreMateria = par.getNombreMateria();
@@ -38,22 +44,30 @@ public class SistemaSIU {
                     carrera = new Carrera(nombreCarrera);
                     sistema.definir(nombreCarrera, carrera);
                 }
-                // Instancio un nuevo objeto Materia con la carrera actual y el nombre de la materia
-                Materia materia = new Materia(nombreCarrera, nombreMateria);
-                // Agrego la materia a la carrera
+                // Instancio un nuevo objeto Materia y la agrego a la carrera
+                Materia materia = new Materia(nombreCarrera, nombreMateria, cursada);
                 carrera.agregarMateria(materia);
 
+                // Agrego referencia al diccionario de la carrera que contiene la materia actual
+                materia.materiasDeLaCarrera = carrera;
+
+                // Agrego data de equivalentes a la materia (ver si esto es necesario, creo que puede serlo para cerrarMateria)
+                materia.cursada.equivalentes = equivalentes;
             }
         }
 
         for (String estudiante : estudiantes) {
-            inscripcionesPorEstudiante.definir(estudiante, 0);
+            this.inscripcionesPorEstudiante.definir(estudiante, 0);
         }
     }
 
     // Métodos adicionales para los tests
     public HashSet<String> getCarreras() {
         return new HashSet<>(sistema.claves());
+    }
+
+    public Carrera getCarrera(String nombreCarrera) {
+        return sistema.obtener(nombreCarrera);
     }
 
     public HashSet<String> getMateriasPorCarrera(String nombreCarrera) {
@@ -77,7 +91,22 @@ public class SistemaSIU {
     }
 
     public void inscribir(String estudiante, String carrera, String materia) {
-        throw new UnsupportedOperationException("Método no implementado aún");
+        Carrera carreraActual = sistema.obtener(carrera);
+        Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+        materiaActual.cursada.estudiantes.add(estudiante);
+        materiaActual.cursada.inscriptos++;
+
+        // Sumo inscripcion al estudiante actual
+        Integer totalPrevio = this.inscripcionesPorEstudiante.obtener(estudiante);
+        this.inscripcionesPorEstudiante.definir(estudiante, totalPrevio + 1);
+
+    }
+
+    public int inscriptos(String materia, String carrera) {
+        Carrera carreraActual = sistema.obtener(carrera);
+        Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+
+        return materiaActual.cursada.inscriptos;
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia) {
@@ -89,10 +118,6 @@ public class SistemaSIU {
     }
 
     public void cerrarMateria(String materia, String carrera) {
-        throw new UnsupportedOperationException("Método no implementado aún");
-    }
-
-    public int inscriptos(String materia, String carrera) {
         throw new UnsupportedOperationException("Método no implementado aún");
     }
 
