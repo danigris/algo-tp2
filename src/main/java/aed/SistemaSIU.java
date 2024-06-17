@@ -66,6 +66,10 @@ public class SistemaSIU {
         return new HashSet<>(sistema.claves());
     }
 
+    public Carrera getCarrera(String nombreCarrera) {
+        return sistema.obtener(nombreCarrera);
+    }
+
     public HashSet<String> getMateriasPorCarrera(String nombreCarrera) {
         Carrera carrera = sistema.obtener(nombreCarrera);
         return carrera != null ? new HashSet<>(carrera.getMaterias().claves()) : new HashSet<>();
