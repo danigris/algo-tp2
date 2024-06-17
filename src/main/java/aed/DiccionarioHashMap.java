@@ -1,6 +1,7 @@
 package aed;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class DiccionarioHashMap<K, V> implements Diccionario<K, V> {
 
@@ -39,6 +40,11 @@ public class DiccionarioHashMap<K, V> implements Diccionario<K, V> {
     @Override
     public String toString() {
         return map.toString();
+    }
+
+    // Metodo adicional para obtener las claves del diccionario
+    public Set<K> claves() {
+        return map.keySet();
     }
 
 }
