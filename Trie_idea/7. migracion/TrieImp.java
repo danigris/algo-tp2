@@ -3,7 +3,11 @@ package aed;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class TrieImp {
+public class DiccionarioDigital2<K, V> implements Diccionario<K, V> {
+
+
+    private final TrieImp<K, V> { trie = new TrieImp<>();
+	
     public final TrieNode root;
     public static final int R = 256; // extended ASCII  // ver si necesitamos todos
 
