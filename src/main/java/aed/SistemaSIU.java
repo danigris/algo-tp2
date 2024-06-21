@@ -81,7 +81,7 @@ public class SistemaSIU {
         for (String nombreCarrera : sistema.claves()) {
             Carrera carrera = sistema.obtener(nombreCarrera);
             sb.append("Carrera: ").append(carrera.getNombreCarrera()).append("\n");
-            DiccionarioHashMap<String, Materia> materias = carrera.getMaterias();
+            DiccionarioDigital<String, Materia> materias = carrera.getMaterias();
             for (String nombreMateria : materias.claves()) {
                 Materia materia = materias.obtener(nombreMateria);
                 sb.append("\tMateria: ").append(nombreMateria).append("\n");

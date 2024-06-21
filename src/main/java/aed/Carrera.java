@@ -3,18 +3,18 @@ package aed;
 public class Carrera {
 
     String nombreCarrera;
-    DiccionarioHashMap<String, Materia> materias;
+    DiccionarioDigital<String, Materia> materias;
 
     public Carrera(String nombreCarrera) {
         this.nombreCarrera = nombreCarrera;
-        this.materias = new DiccionarioHashMap<>();
+        this.materias = new DiccionarioDigital<>();
     }
 
     public String getNombreCarrera() {
         return this.nombreCarrera;
     }
 
-    public DiccionarioHashMap<String, Materia> getMaterias() {
+    public DiccionarioDigital<String, Materia> getMaterias() {
         return this.materias;
     }
 
