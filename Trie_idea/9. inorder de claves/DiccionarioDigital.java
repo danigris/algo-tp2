@@ -2,18 +2,18 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
+public class DiccionarioDigital {//implements Diccionario <K,V> {
 
     public final TrieNode root;
     public Integer elementos;
     public static final int R = 256; // extended ASCII  // ver si necesitamos todos
 
-    public class TrieNode<V> {//} extends Comparable<T>> innecesario
-        V valor;
+    public class TrieNode<T> {//} extends Comparable<T>> innecesario
+        T valor;
         boolean end;
-        ArrayList<TrieNode<V>> child;
+        ArrayList<TrieNode<T>> child;
 
-        public TrieNode(V valor) {
+        public TrieNode(T valor) {
             this.child = new ArrayList<>(R);
             for (int i = 0; i < R; i++) {   // inicializar en null, si no no funciona porque length = 0
                 child.add(null);
@@ -23,11 +23,11 @@ public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
             this.valor = valor;
         }
 
-        public V obtenerValor() {
-            return this.valor;
+        public T getValue() {
+                return this.valor;
         }
         
-        public void addChild(TrieNode<V> child) {
+        public void addChild(TrieNode<T> child) {
                 this.child.add(child);
         }
 
@@ -46,7 +46,7 @@ public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
     }
 
 
-    public <V> void definir (String word ,V v ) {   // acá es donde necesito poner un tipo paramétrico
+    public <T> void definir (String word ,T v ) {   // acá es donde necesito poner un tipo paramétrico
 
         TrieNode currentNode = this.root;
         for (int i = 0; i < word.length(); i++) {
@@ -79,20 +79,9 @@ public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
         }
         return currentNode.end;
     }
-    //public <T> void definir (String word ,T v ) {   // acá es donde necesito poner un tipo paramétrico
 
-    public  V obtener(String word) {       // ver como hago para que este objeto sea V
-        TrieNode currentNode = root;
-        for (int i = 0; i < word.length(); i++) {
-            char ch = word.charAt(i);
-            TrieNode node = (TrieNode) currentNode.child.get(ch);
-            if (node == null) {
-                return null;
-            }
-            currentNode = node;
-        }
-        return (V) currentNode.obtenerValor();
-    }
+
+
 
     public boolean borrar(String word) {
         TrieNode currentNode = root;
@@ -110,9 +99,6 @@ public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
             return true;
         }
         return false;
-    }
-    public Integer tamaño(){
-        return this.elementos;
     }
 
     public List<String> listaClaves() {
@@ -147,31 +133,19 @@ public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
     public static void main(String[] args) {
         DiccionarioDigital obj = new DiccionarioDigital();
         DiccionarioDigital dani = new DiccionarioDigital ();
-        DiccionarioDigital dani2 = new DiccionarioDigital ();
-
-        int[] listaDeNumeros = new int[8];
-        for (int i = 0; i < listaDeNumeros.length; i++) {
-            listaDeNumeros[i] = i;
-        }
-
-        dani.definir("z", listaDeNumeros); // pongo z para que aparezca al toque
-        dani2.definir("w", listaDeNumeros);
+        dani.definir("hola", "hola");
         String word;
         @SuppressWarnings("resource") Scanner scan = new Scanner(System.in);
         sop("string should contain only a-z character for all operation");
         while (true) {
-            sop("1. definir\n2. esta \n3. Delete\n4. diccionarioVacio\n5. inorder de claves\n6.tamaño\n7.obtener\n0.Quit");
+            sop("1. definir\n2. esta \n3. Delete\n4. diccionarioVacio\n5. inorder de claves\n6.Quit");
             try {
                 int t = scan.nextInt();
                 switch (t) {
                 case 1:
                     word = scan.next();
-                    if (isValid(word))  {
-                        if (obj.elementos == 0) {
-                            obj.definir(word, dani);    // estoy metiendo como parametro dos arreglos, va bien. 
-                        } else {
-                            obj.definir(word, dani2);
-                        }
+                    if (isValid(word)) {
+                        obj.definir(word, dani );      // atención que acá metí un parametro string
                     } else {
                         sop("Invalid string: allowed only a-z");
                     }
@@ -218,17 +192,7 @@ public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
                     System.out.println(obj.listaClaves());
                     break;
 
-                case 6:
-                    System.out.println(obj.tamaño());
-                    break;
-
-                    case 7: //obtener
-
-                        word = scan.next();
-                        Object test = obj.obtener(word);
-                        break;
-
-                case 0:
+                    case 6:
                     sop("Quit successfully");
                     System.exit(1);
                     break;

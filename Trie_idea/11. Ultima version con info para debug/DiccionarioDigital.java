@@ -4,108 +4,103 @@ import java.util.Scanner;
 
 public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
 
-    public final TrieNode root;
-    public Integer elementos;
-    public static final int R = 256; // extended ASCII  // ver si necesitamos todos
+    private final TrieNodo root;
+    private Integer elementos;
+    private static final int R = 256; // extended ASCII  // ver si necesitamos todos
 
-    public class TrieNode<V> {//} extends Comparable<T>> innecesario
+    private class TrieNodo {//} extends Comparable<T>> innecesario
         V valor;
         boolean end;
-        ArrayList<TrieNode<V>> child;
+        ArrayList<TrieNodo> hijo;
 
-        public TrieNode(V valor) {
-            this.child = new ArrayList<>(R);
+        private TrieNodo(V valor) {
+            this.hijo = new ArrayList<>(R);
             for (int i = 0; i < R; i++) {   // inicializar en null, si no no funciona porque length = 0
-                child.add(null);
+                hijo.add(null);
             }
             this.end = false;
             //this.valor = null;               //o puedo poner
             this.valor = valor;
         }
 
-        public V obtenerValor() {
+        private V obtenerValor() {
             return this.valor;
         }
         
-        public void addChild(TrieNode<V> child) {
-                this.child.add(child);
-        }
-
-        //public List<TrieNode<T>> getChildren() {
-        //        return child;
-        //
+        //private void agregarhijo(TrieNodo<V> hijo) {
+        //        this.hijo.add(hijo);
         //}
+
     }
 
     public DiccionarioDigital(){
         this.elementos = 0;
-        root = new TrieNode(null);
+        root = new TrieNodo(null);
     }
     public boolean diccionarioVacio() {
         return (this.elementos == 0);
     }
 
 
-    public <V> void definir (String word ,V v ) {   // acá es donde necesito poner un tipo paramétrico
+    public void definir (String word ,V v ) {   // acá es donde necesito poner un tipo paramétrico
 
-        TrieNode currentNode = this.root;
+        TrieNodo NodoActual = this.root;
         for (int i = 0; i < word.length(); i++) {
-            TrieNode node = (TrieNode) currentNode.child.get(word.charAt(i));
-            //TrieNode node = currentNode.child.get(word.charAt(i) - 0);
-            if (node == null) {
-                node = new TrieNode(null);
-                currentNode.child.set(word.charAt(i), node);
+            TrieNodo nodo = NodoActual.hijo.get(word.charAt(i));
+            //TrieNodo nodo = NodoActual.hijo.get(word.charAt(i) - 0);
+            if (nodo == null) {
+                nodo = new TrieNodo(null);
+                NodoActual.hijo.set(word.charAt(i), nodo);
             }
-            currentNode = node;
+            NodoActual = nodo;
         }
-        if (currentNode.end == false) { // la clave NO estaba en el dic
-            currentNode.end = true;
-            currentNode.valor = v;
+        if (NodoActual.end == false) { // la clave NO estaba en el dic
+            NodoActual.end = true;
+            NodoActual.valor = v;
             this.elementos++;
         } else {
-            currentNode.valor = v;  // solo redefino su valor
+            NodoActual.valor = v;  // solo redefino su valor
         }
     }
 
     public boolean esta(String word) {
-        TrieNode currentNode = root;
+        TrieNodo NodoActual = root;
         for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);
-            TrieNode node = (TrieNode) currentNode.child.get(ch);
-            if (node == null) {
+            TrieNodo nodo = NodoActual.hijo.get(ch);
+            if (nodo == null) {
                 return false;
             }
-            currentNode = node;
+            NodoActual = nodo;
         }
-        return currentNode.end;
+        return NodoActual.end;
     }
-    //public <T> void definir (String word ,T v ) {   // acá es donde necesito poner un tipo paramétrico
 
     public  V obtener(String word) {       // ver como hago para que este objeto sea V
-        TrieNode currentNode = root;
+        TrieNodo NodoActual = root;
         for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);
-            TrieNode node = (TrieNode) currentNode.child.get(ch);
-            if (node == null) {
+            TrieNodo nodo =  NodoActual.hijo.get(ch);
+            if (nodo == null) {
                 return null;
             }
-            currentNode = node;
+            NodoActual = nodo;
         }
-        return (V) currentNode.obtenerValor();
+        return NodoActual.obtenerValor();
     }
 
     public boolean borrar(String word) {
-        TrieNode currentNode = root;
+        TrieNodo NodoActual = root;
         for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);
-            TrieNode node = (TrieNode) currentNode.child.get(ch);
-            if (node == null) {
+            TrieNodo nodo = NodoActual.hijo.get(ch);
+            if (nodo == null) {
                 return false;
             }
-            currentNode = node;
+            NodoActual = nodo;
         }
-        if (currentNode.end) {
-            currentNode.end = false;
+        if (NodoActual.end) {
+            NodoActual.end = false;
             this.elementos = this.elementos - 1;
             return true;
         }
@@ -117,17 +112,17 @@ public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
 
     public List<String> listaClaves() {
         List<String> list = new ArrayList<>();
-        lista(root, 0, "", list);
+        lista(root, "", list);
         return list;
     }
-    private void lista(TrieNode currentNode, int id, String prefijo, List<String> list) {
-        if(currentNode==null) return;
+    private void lista(TrieNodo NodoActual, String prefijo, List<String> list) {
+        if(NodoActual==null) return;
         for(int i=0; i<R; i++) {
-            TrieNode node = (TrieNode) currentNode.child.get(i);
-            if(node!=null) {
+            TrieNodo nodo = NodoActual.hijo.get(i);
+            if(nodo!=null) {
                 String res = prefijo + (char)i;
-                if(node.end) list.add(res);
-                lista(node, i, res, list);
+                if(nodo.end) list.add(res);
+                lista(nodo, res, list);
             }
         }
     }
@@ -141,7 +136,7 @@ public class DiccionarioDigital <K,V>  {//implements Diccionario <K,V> {
      * Regex to check if word contains only a-z character
      */
     public static boolean isValid(String word) {
-        return word.matches("^[a-z]+$");
+        return true; //word.matches("^[a-z]+$");
     }
 
     public static void main(String[] args) {
