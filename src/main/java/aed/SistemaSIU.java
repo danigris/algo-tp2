@@ -4,9 +4,9 @@ import java.util.HashSet;
 
 public class SistemaSIU {
 
-    private final DiccionarioHashMap<String, Carrera> sistema;
+    private final DiccionarioDigital<String, Carrera> sistema;
     private final String[] estudiantes;
-    private final DiccionarioHashMap<String, Integer> inscripcionesPorEstudiante;
+    private final DiccionarioDigital<String, Integer> inscripcionesPorEstudiante;
 
     enum CargoDocente {
         AY2,
@@ -18,8 +18,8 @@ public class SistemaSIU {
     // Métodos TP
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias) {
         this.estudiantes = libretasUniversitarias;
-        this.sistema = new DiccionarioHashMap<>();
-        this.inscripcionesPorEstudiante = new DiccionarioHashMap<>();
+        this.sistema = new DiccionarioDigital<>();
+        this.inscripcionesPorEstudiante = new DiccionarioDigital<>();
         inicializarSistema(infoMaterias); // Delegar la inicialización a otro método
     }
 
@@ -110,11 +110,39 @@ public class SistemaSIU {
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia) {
-        throw new UnsupportedOperationException("Método no implementado aún");
+        Carrera carreraActual = sistema.obtener(carrera);
+        Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+
+        int PosicionDelCargo = PosicionDelCargo(cargo); // De CargoDocente a int para usar set
+     
+        int actualesEnElCargo = materiaActual.cursada.docentes.get(PosicionDelCargo); // Obtengo cuantos hay en el cargo
+        materiaActual.cursada.docentes.set(PosicionDelCargo,actualesEnElCargo+1); // Le sumo 1 al Cargo
+    }
+
+    private int PosicionDelCargo (CargoDocente cargo) { // De CargoDocente a su indíce del Array
+        int res;
+        if (cargo == CargoDocente.AY2) {
+            res = 0;
+        } else if (cargo == CargoDocente.AY1) {
+            res = 1;
+        } else if (cargo == CargoDocente.JTP) {
+            res = 2;
+        } else { // if (cargo == CargoDocente.PROF)
+            res = 3;
+        }
+        return res;
     }
 
     public int[] plantelDocente(String materia, String carrera) {
-        throw new UnsupportedOperationException("Método no implementado aún");
+        Carrera carreraActual = sistema.obtener(carrera);
+        Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+
+        int[] res = new int[4]; //int[] con los 4 cargos
+        for (int i = 0; i < 4; i++) {
+            res[i] = materiaActual.cursada.docentes.get(3-i); // int[] res se ordena al revés que ArrayList<Integer> docentes;
+        }
+
+        return res;
     }
 
     public void cerrarMateria(String materia, String carrera) {

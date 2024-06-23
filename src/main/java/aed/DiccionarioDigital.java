@@ -3,7 +3,7 @@ package aed;
 import java.util.List;
 import java.util.ArrayList;
 
-public class DiccionarioDigital <K,V>  /*implements Diccionario <K,V>*/ {
+public class DiccionarioDigital <K,V>  /* implements Diccionario <K,V> */ {
 
     private final TrieNodo root;
     private Integer elementos;
@@ -101,7 +101,7 @@ public class DiccionarioDigital <K,V>  /*implements Diccionario <K,V>*/ {
         }
         return false;
     }
-    public Integer tamaño(){
+    public int tamaño(){
         return this.elementos;
     }
 
