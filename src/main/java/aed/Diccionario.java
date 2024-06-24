@@ -11,9 +11,9 @@ public interface Diccionario<K,V> {
     V obtener(K clave);
     
     void borrar(K clave);
-    
+
     int tamaño();
-    
+        
     /**
      * Imprime el conjunto,  ver si es necesario
      *

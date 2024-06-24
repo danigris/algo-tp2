@@ -150,7 +150,23 @@ public class SistemaSIU {
     }
 
     public boolean excedeCupo(String materia, String carrera) {
-        throw new UnsupportedOperationException("Método no implementado aún");
+        Carrera carreraActual = sistema.obtener(carrera);
+        Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+
+        int cupo = cupo(materiaActual);
+
+        if (cupo < materiaActual.cursada.estudiantes.size()) {
+            return true;
+        }
+        return false;
+    }
+
+    public int cupo (Materia materiaActual) {
+        int cupoPorAY2 = 30 * materiaActual.cursada.docentes.get(0);
+        int cupoPorAY1 = 20 * materiaActual.cursada.docentes.get(1);
+        int cupoPorJTP = 100 * materiaActual.cursada.docentes.get(2);
+        int cupoPorPROF = 250 * materiaActual.cursada.docentes.get(3);
+        return Math.min(Math.min(cupoPorAY1,cupoPorAY2),Math.min(cupoPorJTP,cupoPorPROF));
     }
 
     public String[] carreras() {
