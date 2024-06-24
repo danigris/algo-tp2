@@ -20,11 +20,27 @@ public class SistemaSIU {
         this.estudiantes = libretasUniversitarias;
         this.sistema = new DiccionarioDigital<>();
         this.inscripcionesPorEstudiante = new DiccionarioDigital<>();
-        inicializarSistema(infoMaterias); // Delegar la inicialización a otro método
+        nuevoSistema(infoMaterias); // Delegar la inicialización a otro método
     }
 
-    private void inicializarSistema(InfoMateria[] infoMaterias) {
+    private void nuevoSistema(InfoMateria[] infoMaterias) {
+                /* Complejidad
+→esta complejidad implica que tiene que dar de alta cada Carrera (en el Objeto de Clase SIU) 
+y a la vez entrar a cada Carrera y dar de alta cada Materia de esta (en Objeto de Clase Carrera)  
+y a la vez registrar todas las materias equivalentes (en cada Objeto de Clase Materia)
+y la vez registrar los estudiantes (en el Objeto de Clase SIU) 
 
+→se divide en tres partes
+I) en nuestro diccionario tenemos como claves nombres de carreras, y su valor será el diccionario con claves de nombres de materias; 
+como ambos diccionarios están implementados sobre tries, la complejidad está representada por la longitud del string más largo usado como clave, que en caso de carreras es |c|, y de las materias de esa carrera es |Mc|; 
+y como hay que hacer esta operación para cada materia Mc de todas las carreras c ∈ C, se multiplican las complejidades
+
+II) al dar de alta una materia m, guardamos en esta la referencia a los nombres n de todas sus materias equivalentes en Nm; 
+esto lo hacemos en un trie de strings de nombres de materias n, para el cual insertar un nombre tiene complejidad proporcional a su longitud, es decir complejidad 𝑂(|n|); 
+y como esto lo hacemos para cada materia m, depende del numero total de materias en M y del largo de cada uno de sus nombres
+
+III) E es la cantidad total de estudiantes en todas las carreras de grado, y al no estar esta cantidad acotada, como los guardamos en un vector de strings cuando los vamos registrando, registrar E estudiantes implica realizar E inserciones, lo que da cuenta de la complejidad lineal de la operación
+*/
         for (InfoMateria equivalentes : infoMaterias) {
 
             // Extraigo los pares de cada InfoMateria 
@@ -90,7 +106,8 @@ public class SistemaSIU {
         return sb.toString();
     }
 
-    public void inscribir(String estudiante, String carrera, String materia) {
+    public void inscribir(String estudiante, String carrera, String materia) { 
+        //Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas. El resto tiene complejidad O(1)
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
         materiaActual.cursada.estudiantes.add(estudiante);
@@ -103,6 +120,8 @@ public class SistemaSIU {
     }
 
     public int inscriptos(String materia, String carrera) {
+        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas. 
+        // El resto son operaciones con complejidad O(1)
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
@@ -110,6 +129,10 @@ public class SistemaSIU {
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia) {
+        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
+        // Como la cantidad de cargos docentes esta acotada (4) encontrar la PosicionDelCargo es O(1)
+        // El resto son operaciones con complejidad O(1)  
+
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
@@ -134,6 +157,10 @@ public class SistemaSIU {
     }
 
     public int[] plantelDocente(String materia, String carrera) {
+        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
+        // Como la cantidad de cargos docentes esta acotada (4) encontrar la PosicionDelCargo es O(1)
+        // El resto son operaciones con complejidad O(1)  
+
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
@@ -150,6 +177,9 @@ public class SistemaSIU {
     }
 
     public boolean excedeCupo(String materia, String carrera) {
+        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
+        // Como la cantidad de cargos docentes esta acotada (4) encontrar el cargo que limita el cupo es O(1)
+        // El resto son operaciones con complejidad O(1)  
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
