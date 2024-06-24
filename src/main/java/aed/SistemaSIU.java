@@ -1,7 +1,5 @@
 package aed;
 
-import java.util.HashSet;
-
 public class SistemaSIU {
 
     private final DiccionarioDigital<String, Carrera> sistema;
@@ -78,17 +76,9 @@ III) E es la cantidad total de estudiantes en todas las carreras de grado, y al 
     }
 
     // Métodos adicionales para los tests
-    public HashSet<String> getCarreras() {
-        return new HashSet<>(sistema.claves());
-    }
 
     public Carrera getCarrera(String nombreCarrera) {
         return sistema.obtener(nombreCarrera);
-    }
-
-    public HashSet<String> getMateriasPorCarrera(String nombreCarrera) {
-        Carrera carrera = sistema.obtener(nombreCarrera);
-        return carrera != null ? new HashSet<>(carrera.getMaterias().claves()) : new HashSet<>();
     }
 
     @Override

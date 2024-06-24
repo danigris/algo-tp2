@@ -3,13 +3,13 @@ package aed;
 import java.util.List;
 import java.util.ArrayList;
 
-public class DiccionarioDigital <K,V>  /* implements Diccionario <K,V> */ {
+public class DiccionarioDigital <K,V>{
 
     private final TrieNodo root;
     private Integer elementos;
-    private static final int R = 256; // extended ASCII, solo usamos mayus y minus (incluyendo Ññ) y espacios, pero creo va 256 igual
+    private static final int R = 256; // extended ASCII
 
-    private class TrieNodo {//} extends Comparable<T>> innecesario
+    private class TrieNodo {
         V valor;
         boolean end;
         ArrayList<TrieNodo> hijo;
@@ -20,7 +20,6 @@ public class DiccionarioDigital <K,V>  /* implements Diccionario <K,V> */ {
                 hijo.add(null);
             }
             this.end = false;
-            //this.valor = null;               //o puedo poner
             this.valor = valor;
         }
 
@@ -37,7 +36,7 @@ public class DiccionarioDigital <K,V>  /* implements Diccionario <K,V> */ {
         return (this.elementos == 0);
     }
 
-    public void definir (String word ,V v ) {   // acá es donde necesito poner un tipo paramétrico
+    public void definir (String word ,V v ) {
 
         TrieNodo NodoActual = this.root;
         for (int i = 0; i < word.length(); i++) {
@@ -71,7 +70,7 @@ public class DiccionarioDigital <K,V>  /* implements Diccionario <K,V> */ {
         return NodoActual.end;
     }
 
-    public V obtener(String word) {       // ver como hago para que este objeto sea V
+    public V obtener(String word) {
         TrieNodo NodoActual = root;
         for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);
@@ -105,7 +104,7 @@ public class DiccionarioDigital <K,V>  /* implements Diccionario <K,V> */ {
         return this.elementos;
     }
 
-    public List<String> claves() { // Antes era listaClaves
+    public List<String> claves() {
         List<String> list = new ArrayList<>();
         lista(root, "", list);
         return list;
