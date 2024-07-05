@@ -1,5 +1,7 @@
 package aed;
 
+import java.util.HashSet;
+
 public class SistemaSIU {
 
     private final DiccionarioDigital<String, Carrera> sistema;
@@ -21,24 +23,27 @@ public class SistemaSIU {
         nuevoSistema(infoMaterias); // Delegar la inicialización a otro método
     }
 
-    private void nuevoSistema(InfoMateria[] infoMaterias) {
-                /* Complejidad
-→esta complejidad implica que tiene que dar de alta cada Carrera (en el Objeto de Clase SIU) 
-y a la vez entrar a cada Carrera y dar de alta cada Materia de esta (en Objeto de Clase Carrera)  
-y a la vez registrar todas las materias equivalentes (en cada Objeto de Clase Materia)
-y la vez registrar los estudiantes (en el Objeto de Clase SIU) 
+    private void nuevoSistema(InfoMateria[] infoMaterias) { /* Leon: falta poner que armar el trie con estudiantes es O(E) pq insertar es O(1)
+        podrían hacer el chequeo de si está definida la carrera con el método "esta"
+        En la complejidad no es |Mc|, es solo Mc, ya que se accede Mc veces a cada carrera en el trie. */
+                
+    /* Complejidad
+    →esta complejidad implica que tiene que dar de alta cada Carrera (en el Objeto de Clase SIU) 
+    y a la vez entrar a cada Carrera y dar de alta cada Materia de esta (en Objeto de Clase Carrera)  
+    y a la vez registrar todas las materias equivalentes (en cada Objeto de Clase Materia)
+    y la vez registrar los estudiantes (en el Objeto de Clase SIU) 
 
-→se divide en tres partes
-I) en nuestro diccionario tenemos como claves nombres de carreras, y su valor será el diccionario con claves de nombres de materias; 
-como ambos diccionarios están implementados sobre tries, la complejidad está representada por la longitud del string más largo usado como clave, que en caso de carreras es |c|, y de las materias de esa carrera es |Mc|; 
-y como hay que hacer esta operación para cada materia Mc de todas las carreras c ∈ C, se multiplican las complejidades
+    →se divide en tres partes
+    I) en nuestro diccionario tenemos como claves nombres de carreras, y su valor será el diccionario con claves de nombres de materias; 
+    como ambos diccionarios están implementados sobre tries, la complejidad está representada por la longitud del string más largo usado como clave, que en caso de carreras es |c|, y de las materias de esa carrera es |Mc|; 
+    y como hay que hacer esta operación para cada materia Mc de todas las carreras c ∈ C, se multiplican las complejidades
 
-II) al dar de alta una materia m, guardamos en esta la referencia a los nombres n de todas sus materias equivalentes en Nm; 
-esto lo hacemos en un trie de strings de nombres de materias n, para el cual insertar un nombre tiene complejidad proporcional a su longitud, es decir complejidad 𝑂(|n|); 
-y como esto lo hacemos para cada materia m, depende del numero total de materias en M y del largo de cada uno de sus nombres
+    II) al dar de alta una materia m, guardamos en esta la referencia a los nombres n de todas sus materias equivalentes en Nm; 
+    esto lo hacemos en un trie de strings de nombres de materias n, para el cual insertar un nombre tiene complejidad proporcional a su longitud, es decir complejidad 𝑂(|n|); 
+    y como esto lo hacemos para cada materia m, depende del numero total de materias en M y del largo de cada uno de sus nombres
 
-III) E es la cantidad total de estudiantes en todas las carreras de grado, y al no estar esta cantidad acotada, como los guardamos en un vector de strings cuando los vamos registrando, registrar E estudiantes implica realizar E inserciones, lo que da cuenta de la complejidad lineal de la operación
-*/
+    III) E es la cantidad total de estudiantes en todas las carreras de grado, y al no estar esta cantidad acotada, como los guardamos en un vector de strings cuando los vamos registrando, registrar E estudiantes implica realizar E inserciones, lo que da cuenta de la complejidad lineal de la operación
+    */
         for (InfoMateria equivalentes : infoMaterias) {
 
             // Extraigo los pares de cada InfoMateria 
@@ -76,9 +81,17 @@ III) E es la cantidad total de estudiantes en todas las carreras de grado, y al 
     }
 
     // Métodos adicionales para los tests
+    public HashSet<String> getCarreras() {
+        return new HashSet<>(sistema.claves());
+    }
 
     public Carrera getCarrera(String nombreCarrera) {
         return sistema.obtener(nombreCarrera);
+    }
+
+    public HashSet<String> getMateriasPorCarrera(String nombreCarrera) {
+        Carrera carrera = sistema.obtener(nombreCarrera);
+        return carrera != null ? new HashSet<>(carrera.getMaterias().claves()) : new HashSet<>();
     }
 
     @Override
@@ -118,7 +131,11 @@ III) E es la cantidad total de estudiantes en todas las carreras de grado, y al 
         return materiaActual.cursada.inscriptos;
     }
 
-    public void agregarDocente(CargoDocente cargo, String carrera, String materia) {
+    public void agregarDocente(CargoDocente cargo, String carrera, String materia) { /*  Leon: no hay precondición que el cargo del docente 
+        que se quiere agregar tenga que ser correcto, asi que no puede quedar como acción default ante un valor desconocido
+        que se agregue un profesor. (recomendación: usar case switch).
+        */
+
         // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
         // Como la cantidad de cargos docentes esta acotada (4) encontrar la PosicionDelCargo es O(1)
         // El resto son operaciones con complejidad O(1)  

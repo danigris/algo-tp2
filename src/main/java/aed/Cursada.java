@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Cursada {
 
     String nombreMateriaEstandar;
-    InfoMateria equivalentes;
+    InfoMateria equivalentes; // TODO al 17/6: esto tiene que cambiarse a un trie<string> (sin values! es un trie generico) para cumplir la segunda expresion de la complejidad de nuevoSistema
     ArrayList<String> estudiantes;
     ArrayList<Integer> docentes;
     int cupo;
