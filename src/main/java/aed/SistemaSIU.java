@@ -110,7 +110,7 @@ public class SistemaSIU {
     }
 
     public void inscribir(String estudiante, String carrera, String materia) { 
-        //Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas. El resto tiene complejidad O(1)
+        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas. El resto tiene complejidad O(1)
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
         materiaActual.cursada.estudiantes.add(estudiante);
@@ -131,11 +131,7 @@ public class SistemaSIU {
         return materiaActual.cursada.inscriptos;
     }
 
-    public void agregarDocente(CargoDocente cargo, String carrera, String materia) { /*  Leon: no hay precondición que el cargo del docente 
-        que se quiere agregar tenga que ser correcto, asi que no puede quedar como acción default ante un valor desconocido
-        que se agregue un profesor. (recomendación: usar case switch).
-        */
-
+    public void agregarDocente(CargoDocente cargo, String carrera, String materia) { 
         // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
         // Como la cantidad de cargos docentes esta acotada (4) encontrar la PosicionDelCargo es O(1)
         // El resto son operaciones con complejidad O(1)  
@@ -144,24 +140,35 @@ public class SistemaSIU {
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
         int PosicionDelCargo = PosicionDelCargo(cargo); // De CargoDocente a int para usar set
-     
-        int actualesEnElCargo = materiaActual.cursada.docentes.get(PosicionDelCargo); // Obtengo cuantos hay en el cargo
-        materiaActual.cursada.docentes.set(PosicionDelCargo,actualesEnElCargo+1); // Le sumo 1 al Cargo
+        
+        if (!(PosicionDelCargo == -1)) { // Si el cargo no es incorrecto
+            int actualesEnElCargo = materiaActual.cursada.docentes.get(PosicionDelCargo); // Obtengo cuantos hay en el cargo
+            materiaActual.cursada.docentes.set(PosicionDelCargo,actualesEnElCargo+1); // Le sumo 1 al Cargo
+        }
     }
 
-    private int PosicionDelCargo (CargoDocente cargo) { // De CargoDocente a su indíce del Array
+    private int PosicionDelCargo(CargoDocente cargo) { // De CargoDocente a su indíce del Array
         int res;
-        if (cargo == CargoDocente.AY2) {
-            res = 0;
-        } else if (cargo == CargoDocente.AY1) {
-            res = 1;
-        } else if (cargo == CargoDocente.JTP) {
-            res = 2;
-        } else { // if (cargo == CargoDocente.PROF)
-            res = 3;
+        switch (cargo) {
+            case AY2:
+                res = 0;
+                break;
+            case AY1:
+                res = 1;
+                break;
+            case JTP:
+                res = 2;
+                break;
+            case PROF:
+                res = 3;
+                break;
+            default:
+                res = -1; 
+                break;
         }
         return res;
     }
+    
 
     public int[] plantelDocente(String materia, String carrera) {
         // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
@@ -171,7 +178,7 @@ public class SistemaSIU {
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
-        int[] res = new int[4]; //int[] con los 4 cargos
+        int[] res = new int[4]; // int[] con los 4 cargos
         for (int i = 0; i < 4; i++) {
             res[i] = materiaActual.cursada.docentes.get(3-i); // int[] res se ordena al revés que ArrayList<Integer> docentes;
         }
@@ -189,10 +196,9 @@ public class SistemaSIU {
         // El resto son operaciones con complejidad O(1)  
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+        cupo(materiaActual);
 
-        int cupo = cupo(materiaActual);
-
-        if (cupo < materiaActual.cursada.estudiantes.size()) {
+        if (materiaActual.cursada.cupo < materiaActual.cursada.estudiantes.size()) {
             return true;
         }
         return false;
@@ -203,10 +209,23 @@ public class SistemaSIU {
         int cupoPorAY1 = 20 * materiaActual.cursada.docentes.get(1);
         int cupoPorJTP = 100 * materiaActual.cursada.docentes.get(2);
         int cupoPorPROF = 250 * materiaActual.cursada.docentes.get(3);
-        return Math.min(Math.min(cupoPorAY1,cupoPorAY2),Math.min(cupoPorJTP,cupoPorPROF));
+        int cupo = Math.min(Math.min(cupoPorAY1,cupoPorAY2),Math.min(cupoPorJTP,cupoPorPROF));
+        materiaActual.cursada.cupo = cupo;
+        return materiaActual.cursada.cupo;
     }
 
     public String[] carreras() {
+        /*
+        Idea, lo mismo para el de abajo:
+    
+        String[] res = []
+
+        for (carrera in sistema.claves) {
+            res.append(carrera)
+        }
+        
+        return res
+        */
         throw new UnsupportedOperationException("Método no implementado aún");
     }
 
@@ -215,6 +234,8 @@ public class SistemaSIU {
     }
 
     public int materiasInscriptas(String estudiante) {
-        throw new UnsupportedOperationException("Método no implementado aún");
+        // Complejidad: Recordando que inscripcionesPorEstudiante es un Diccionario Digital, 
+        // como el largo de la libreta universitaria esta acotada (6) encontrar el cargo que limita el cupo es O(1)
+        return this.inscripcionesPorEstudiante.obtener(estudiante);
     }
 }

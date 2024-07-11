@@ -1,5 +1,7 @@
 package aed;
 
+import aed.SistemaSIU.CargoDocente;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -41,8 +43,29 @@ public class Main {
         // Inicializar el sistema
         SistemaSIU sistema = new SistemaSIU(infoMaterias, estudiantes);
 
-        // Imprimir toda la información del sistema
+        // Imprimir toda la información del sistema (lista de carreras, con lista materias de cada una)
         System.out.println(sistema.toString());
+
+        // Inscribir estudiantes
+        sistema.inscribir("12345","Ciencias de Datos", "Algoritmos3");
+        sistema.inscribir("67890","Ciencias de la Computación", "Técnicas de Diseño de Algoritmos");
+
+        // Agregar Docentes
+        sistema.agregarDocente(CargoDocente.AY2,"Ciencias de Datos", "Algoritmos3");
+        sistema.agregarDocente(CargoDocente.AY2,"Ciencias de la Computación", "Técnicas de Diseño de Algoritmos");
+        sistema.agregarDocente(CargoDocente.AY1,"Ciencias de Datos", "Algoritmos3");
+        sistema.agregarDocente(CargoDocente.AY1,"Ciencias de Datos", "Algoritmos3");
+        sistema.agregarDocente(CargoDocente.JTP,"Ciencias de Datos", "Algoritmos3");
+        sistema.agregarDocente(CargoDocente.PROF,"Ciencias de Datos", "Algoritmos3");
+
+        // Calcula cupos de cada materia en cada carrera
+        for (String nombreCarrera : sistema.getCarreras()) {
+            Carrera carrera = sistema.getCarrera(nombreCarrera);
+            for (String nombreMateria : carrera.getMaterias().claves()) {
+                Materia materia = carrera.getMaterias().obtener(nombreMateria);
+                sistema.cupo(materia);
+            }
+        }
 
         // Imprimir información de cada materia en cada carrera
         for (String nombreCarrera : sistema.getCarreras()) {
