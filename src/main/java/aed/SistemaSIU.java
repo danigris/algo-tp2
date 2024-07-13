@@ -21,11 +21,12 @@ public class SistemaSIU {
         nuevoSistema(infoMaterias); // Delegar la inicialización a otro método
     }
 
-    private void nuevoSistema(InfoMateria[] infoMaterias) { /* Leon: falta poner que armar el trie con estudiantes es O(E) pq insertar es O(1)
+    private void nuevoSistema(InfoMateria[] infoMaterias) {
+        /* Leon: falta poner que armar el trie con estudiantes es O(E) pq insertar es O(1)
         podrían hacer el chequeo de si está definida la carrera con el método "esta"
         En la complejidad no es |Mc|, es solo Mc, ya que se accede Mc veces a cada carrera en el trie. */
-                
-    /* Complejidad
+
+ /* Complejidad
     →esta complejidad implica que tiene que dar de alta cada Carrera (en el Objeto de Clase SIU) 
     y a la vez entrar a cada Carrera y dar de alta cada Materia de esta (en Objeto de Clase Carrera)  
     y a la vez registrar todas las materias equivalentes (en cada Objeto de Clase Materia)
@@ -41,7 +42,7 @@ public class SistemaSIU {
     y como esto lo hacemos para cada materia m, depende del numero total de materias en M y del largo de cada uno de sus nombres
 
     III) E es la cantidad total de estudiantes en todas las carreras de grado, y al no estar esta cantidad acotada, como los guardamos en un vector de strings cuando los vamos registrando, registrar E estudiantes implica realizar E inserciones, lo que da cuenta de la complejidad lineal de la operación
-    */
+         */
         for (InfoMateria equivalentes : infoMaterias) {
 
             // Extraigo los pares de cada InfoMateria 
@@ -56,7 +57,7 @@ public class SistemaSIU {
                 String nombreMateria = par.getNombreMateria();
 
                 // Si la carrera no existe en el sistema, la creo
-                Carrera carrera = sistema.obtener(nombreCarrera); // Esto podria reemplazarlo por la clase Carrera; ver bien como
+                Carrera carrera = sistema.obtener(nombreCarrera);
                 if (carrera == null) {
                     carrera = new Carrera(nombreCarrera);
                     sistema.definir(nombreCarrera, carrera);
@@ -98,8 +99,24 @@ public class SistemaSIU {
         return sb.toString();
     }
 
-    public void inscribir(String estudiante, String carrera, String materia) { 
-        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas. El resto tiene complejidad O(1)
+    /**
+     * Este método inscribe un estudiante en una materia específica dentro de 
+     * una carrera específica.
+     *
+     * Complejidad: O(|c| + |m|), donde |c| es la longitud del nombre de la carrera 
+     * y |m| es la longitud del nombre de la materia.
+     * - Recorrer el trie de la Carrera: O(|c|)
+     * - Recorrer el trie de la Materia: O(|m|)
+     * - Añadir el estudiante a la lista de estudiantes de la materia: O(1)
+     * - Actualizar el número de inscriptos: O(1)
+     * - Actualizar el número de inscripciones del estudiante: O(1)
+     *
+     * @param estudiante la posición del estudiante en el array de estudiantes
+     * @param carrera el nombre de la carrera a la cual pertenece la materia
+     * @param materia el nombre de la materia en la cual se desea inscribir al estudiante
+     */
+    public void inscribir(String estudiante, String carrera, String materia) {
+       
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
         materiaActual.cursada.estudiantes.add(estudiante);
@@ -111,32 +128,60 @@ public class SistemaSIU {
 
     }
 
+    /**
+     * Este método devuelve la cantidad de inscriptos en una materia específica 
+     * dentro de una carrera específica.
+     *
+     * Complejidad: O(|c| + |m|), donde |c| es la longitud del nombre de la 
+     * carrera y |m| es la longitud del nombre de la materia.
+     * - Recorrer el trie de la Carrera: O(|c|)
+     * - Recorrer el trie de la Materia: O(|m|)
+     * - El resto son operaciones con complejidad O(1)
+     *
+     * @param materia el nombre de la materia para la cual se desea obtener 
+     * la cantidad de inscriptos
+     * @param carrera el nombre de la carrera a la cual pertenece la materia
+     * @return la cantidad de inscriptos en la materia especificada
+     */
     public int inscriptos(String materia, String carrera) {
-        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas. 
-        // El resto son operaciones con complejidad O(1)
+        
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
         return materiaActual.cursada.inscriptos;
     }
 
-    public void agregarDocente(CargoDocente cargo, String carrera, String materia) { 
-        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
-        // Como la cantidad de cargos docentes esta acotada (4) encontrar la PosicionDelCargo es O(1)
-        // El resto son operaciones con complejidad O(1)  
+    /**
+     * Este método agrega un docente a un cargo específico dentro de una materia 
+     * en una carrera específica.
+     *
+     * Complejidad: O(|c| + |m|), donde |c| es la longitud del nombre de la 
+     * carrera y |m| es la longitud del nombre de la materia.
+     * - Recorrer el trie de la Carrera: O(|c|)
+     * - Recorrer el trie de la Materia: O(|m|)
+     * - Como la cantidad de cargos docentes está acotada (4), 
+     * encontrar la PosicionDelCargo es O(1)
+     * - El resto son operaciones con complejidad O(1)
+     *
+     * @param cargo el cargo docente que se desea agregar
+     * @param carrera el nombre de la carrera a la cual pertenece la materia
+     * @param materia el nombre de la materia para la cual se desea agregar el docente
+     */
+    public void agregarDocente(CargoDocente cargo, String carrera, String materia) {
 
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
         int PosicionDelCargo = PosicionDelCargo(cargo); // De CargoDocente a int para usar set
-        
+
         if (!(PosicionDelCargo == -1)) { // Si el cargo no es incorrecto
             int actualesEnElCargo = materiaActual.cursada.docentes.get(PosicionDelCargo); // Obtengo cuantos hay en el cargo
-            materiaActual.cursada.docentes.set(PosicionDelCargo,actualesEnElCargo+1); // Le sumo 1 al Cargo
+            materiaActual.cursada.docentes.set(PosicionDelCargo, actualesEnElCargo + 1); // Le sumo 1 al Cargo
         }
     }
 
-    private int PosicionDelCargo(CargoDocente cargo) { // De CargoDocente a su indíce del Array
+    private int PosicionDelCargo(CargoDocente cargo) {
+        // De CargoDocente a su indíce del Array
         int res;
         switch (cargo) {
             case AY2:
@@ -152,24 +197,38 @@ public class SistemaSIU {
                 res = 3;
                 break;
             default:
-                res = -1; 
+                res = -1;
                 break;
         }
         return res;
     }
-    
 
+    /**
+     * Este método devuelve un array de enteros que representa el plantel 
+     * docente de una materia específica dentro de una carrera específica.
+     *
+     * Complejidad: O(|c| + |m|), donde |c| es la longitud del nombre de la 
+     * carrera y |m| es la longitud del nombre de la materia.
+     * - Recorrer el trie de la Carrera: O(|c|)
+     * - Recorrer el trie de la Materia: O(|m|)
+     * - Como la cantidad de cargos docentes está acotada (4), encontrar la
+     * PosicionDelCargo es O(1)
+     * - El resto son operaciones con complejidad O(1)
+     *
+     * @param materia el nombre de la materia para la cual se desea obtener el
+     * plantel docente
+     * @param carrera el nombre de la carrera a la cual pertenece la materia
+     * @return un array de enteros que contiene los 4 cargos docentes ordenados
+     * en orden inverso al del ArrayList original
+     */
     public int[] plantelDocente(String materia, String carrera) {
-        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
-        // Como la cantidad de cargos docentes esta acotada (4) encontrar la PosicionDelCargo es O(1)
-        // El resto son operaciones con complejidad O(1)  
 
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
         int[] res = new int[4]; // int[] con los 4 cargos
         for (int i = 0; i < 4; i++) {
-            res[i] = materiaActual.cursada.docentes.get(3-i); // int[] res se ordena al revés que ArrayList<Integer> docentes;
+            res[i] = materiaActual.cursada.docentes.get(3 - i); // int[] res se ordena al revés que ArrayList<Integer> docentes;
         }
 
         return res;
@@ -179,41 +238,68 @@ public class SistemaSIU {
         throw new UnsupportedOperationException("Método no implementado aún");
     }
 
+    /**
+     * Este método verifica si la cantidad de estudiantes inscriptos en una
+     * materia excede el cupo disponible.
+     *
+     * Complejidad: O(|c| + |m|), donde |c| es la longitud del nombre de la 
+     * carrera y |m| es la longitud del nombre de la materia. 
+     * - Recorrer el trie de la Carrera: O(|c|) 
+     * - Recorrer el trie de la Materia: O(|m|) 
+     * - La cantidad de cargos docentes está acotada (4), 
+     * por lo que encontrar el cargo que limita el cupo es O(1) 
+     * - El resto son operaciones con complejidad O(1)
+     *
+     * @param materia el nombre de la materia
+     * @param carrera el nombre de la carrera
+     * @return true si la cantidad de estudiantes excede el cupo, false en caso contrario
+     */
     public boolean excedeCupo(String materia, String carrera) {
-        // Complejidad: Recorrer el trie de la Carrera y de la materia en las 2 primeras líneas.
-        // Como la cantidad de cargos docentes esta acotada (4) encontrar el cargo que limita el cupo es O(1)
-        // El resto son operaciones con complejidad O(1)  
+
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
         cupo(materiaActual);
 
-        if (materiaActual.cursada.cupo < materiaActual.cursada.estudiantes.size()) {
-            return true;
-        }
-        return false;
+        return materiaActual.cursada.cupo < materiaActual.cursada.estudiantes.size();
     }
 
-    public int cupo (Materia materiaActual) {
+    public int cupo(Materia materiaActual) {
         int cupoPorAY2 = 30 * materiaActual.cursada.docentes.get(0);
         int cupoPorAY1 = 20 * materiaActual.cursada.docentes.get(1);
         int cupoPorJTP = 100 * materiaActual.cursada.docentes.get(2);
         int cupoPorPROF = 250 * materiaActual.cursada.docentes.get(3);
-        int cupo = Math.min(Math.min(cupoPorAY1,cupoPorAY2),Math.min(cupoPorJTP,cupoPorPROF));
+        int cupo = Math.min(Math.min(cupoPorAY1, cupoPorAY2), Math.min(cupoPorJTP, cupoPorPROF));
         materiaActual.cursada.cupo = cupo;
         return materiaActual.cursada.cupo;
     }
 
     /**
-     * Este método tiene una complejidad de O(Σ |c|) para todos los c en C,
-     * donde C es el conjunto de todas las carreras |c| es la
-     * longitud de cada carrera.
+     * Este método devuelve un array de todas las carreras de grado.
      * 
-     *  @return un array de strings que contiene todas las carreras, ordenado lexicograficamente
+     * Complejidad: O(Σ |c|) para todos los c en C,
+     * donde C es el conjunto de todas las carreras y |c| es la longitud de cada
+     * carrera.
+     *
+     * @return un array de strings que contiene todas las carreras, ordenado
+     * lexicográficamente
      */
     public String[] carreras() {
         return sistema.claves();
     }
 
+    /**
+     * Este método devuelve un array de todas las materias asociadas a una
+     * carrera específica.
+     *
+     * Complejidad: O(|c| + Σ |m_c|) para todos los m_c en M_c, donde |c| es la
+     * longitud del nombre de la carrera y Σ |m_c| es la suma de las longitudes de
+     * los nombres de las materias en la carrera.
+     *
+     * @param carrera el nombre de la carrera para la cual se desean obtener las
+     * materias
+     * @return un array de strings que contiene todas las materias de la carrera
+     * especificada, ordenado lexicográficamente
+     */
     public String[] materias(String carrera) {
         Carrera carreraActual = sistema.obtener(carrera);
         DiccionarioDigital<String, Materia> diccionarioMaterias = carreraActual.getMaterias();
