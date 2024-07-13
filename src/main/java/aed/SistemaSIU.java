@@ -1,5 +1,7 @@
 package aed;
 
+import javax.swing.border.MatteBorder;
+
 public class SistemaSIU {
 
     private final DiccionarioDigital<String, Carrera> sistema;
@@ -235,6 +237,34 @@ public class SistemaSIU {
     }
 
     public void cerrarMateria(String materia, String carrera) {
+        Carrera carreraActual = sistema.obtener(carrera);
+        Materia materiaActual = carreraActual.getMaterias().obtener(materia);
+
+        /* 
+        ParCarreraMateria[] pares = equivalentes.getParesCarreraMateria();
+        Materia.cursada.equivalentes 
+        // Extraigo la data de carrera y nombreMateria de cada ParCarreraMateria
+        for (ParCarreraMateria par : pares) {
+            String nombreCarrera = par.getCarrera();
+            String nombreMateria = par.getNombreMateria();
+
+            // Si la carrera no existe en el sistema, la creo
+            Carrera carrera = sistema.obtener(nombreCarrera);
+            if (carrera == null) {
+                carrera = new Carrera(nombreCarrera);
+                sistema.definir(nombreCarrera, carrera);
+            }
+            // Instancio un nuevo objeto Materia y la agrego a la carrera
+            Materia materia = new Materia(nombreCarrera, nombreMateria, cursada);
+            carrera.agregarMateria(materia);
+
+            // Agrego referencia al diccionario de la carrera que contiene la materia actual
+            materia.materiasDeLaCarrera = carrera;
+
+            // Agrego data de equivalentes a la materia (ver si esto es necesario, creo que puede serlo para cerrarMateria)
+            materia.cursada.equivalentes = equivalentes;
+        }
+            */
         throw new UnsupportedOperationException("Método no implementado aún");
     }
 

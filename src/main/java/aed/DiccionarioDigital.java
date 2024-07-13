@@ -20,12 +20,22 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
                 hijo.add(null);
             }
             this.end = false;
-            //this.valor = null;               //o puedo poner
             this.valor = valor;
         }
 
         private V obtenerValor() {
             return this.valor;
+        }
+
+        private int cantidadDeHijos() {
+            int res = 0;
+            for (int i = 0; i < R; i++) {
+                TrieNodo nodo = this.hijo.get(i);
+                if (nodo.valor != null) {
+                    res++;
+                }
+            }
+            return res;
         }
     }
 
@@ -87,21 +97,46 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
 
     public boolean borrar(String word) { // Leon: no mantiene el invariante del mismo (mantiene nodos inutiles)
         TrieNodo NodoActual = root;
-        for (int i = 0; i < word.length(); i++) {
+        TrieNodo ultimoNodo = root;
+        int ultimoIndice = 0;
+        //ver caso word.lenght=1
+
+        // Encontrar ultimo nodo util, buscar nodo de clave hasta 
+        for (int i = 0; i < word.length()-1; i++) { // i = ultimoIndice
             char ch = word.charAt(i);
             TrieNodo nodo = NodoActual.hijo.get(ch);
             if (nodo == null) {
                 return false;
             }
+            if (nodo.end || nodo.cantidadDeHijos() > 1) {
+                ultimoNodo = nodo;
+                ultimoIndice = i;
+            }
             NodoActual = nodo;
         }
+
+        // Ultima iteraccion (lo mismo pero sin seguir buscando ultimoNodo)
+        char ch = word.charAt(word.length());
+        TrieNodo nodo = NodoActual.hijo.get(ch);
+        if (nodo == null) {
+            return false;
+        }
+        NodoActual = nodo;
+
+        // Si clave existia, la borramos (Con sus hijos si es necesario)
         if (NodoActual.end) {
             NodoActual.end = false;
             this.elementos = this.elementos - 1;
+            // Borrado de hijos
+            if (NodoActual.cantidadDeHijos() == 0) { // Rama es inutil solo si el Nodo de la clave no llevaba a otras claves
+                TrieNodo Nodo = ultimoNodo.hijo.get(word.charAt(ultimoIndice)); // El hijo del ultimo nodo que direccionaba a clave
+                Nodo = null;
+            }
             return true;
         }
         return false;
     }
+
     public int tamaño(){
         return this.elementos;
     }
