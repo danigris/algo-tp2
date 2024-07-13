@@ -1,15 +1,15 @@
 package aed;
 
-import java.util.List;
 import java.util.ArrayList;
 
-public class DiccionarioDigital <K,V>   /* implements Diccionario <K,V> */ {
+public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
 
     private final TrieNodo root;
     private Integer elementos;
     private static final int R = 256; // extended ASCII, solo usamos mayus y minus (incluyendo Ññ) y espacios, pero creo va 256 igual
 
     private class TrieNodo {//} extends Comparable<T>> innecesario
+
         V valor;
         boolean end;
         ArrayList<TrieNodo> hijo;
@@ -29,15 +29,16 @@ public class DiccionarioDigital <K,V>   /* implements Diccionario <K,V> */ {
         }
     }
 
-    public DiccionarioDigital(){
+    public DiccionarioDigital() {
         this.elementos = 0;
         root = new TrieNodo(null);
     }
+
     public boolean diccionarioVacio() {
         return (this.elementos == 0);
     }
 
-    public void definir (String word ,V v ) {    // acá es donde necesito poner un tipo paramétrico
+    public void definir(String word, V v) {    // acá es donde necesito poner un tipo paramétrico
 
         TrieNodo NodoActual = this.root;
         for (int i = 0; i < word.length(); i++) {
@@ -105,22 +106,52 @@ public class DiccionarioDigital <K,V>   /* implements Diccionario <K,V> */ {
         return this.elementos;
     }
 
-    public List<String> claves() { // Antes era listaClaves
-        List<String> list = new ArrayList<>();
-        lista(root, "", list);
-        return list;
+    /**
+     * Este método devuelve un array de todas las claves almacenadas en el Trie.
+     *
+     * Complejidad: O(Σ |c|) para todos los c en C, donde C es el conjunto de
+     * todas las claves en el Trie y |c| es la longitud de cada clave.
+     *
+     * @return un array de strings que contiene todas las claves en el Trie,
+     * ordenado lexicograficamente
+     */
+    public String[] claves() {
+        ArrayList<String> list = new ArrayList<>();
+        lista(root, new StringBuilder(), list);
+        String[] claves = list.toArray(new String[list.size()]);
+        return claves;
     }
-    private void lista(TrieNodo NodoActual, String prefijo, List<String> list) { /*  Leon: hacen "string + char" para agregar chars al prefijo.
-     Haciendo eso la complejidad se va de las manos, ya que en cada iteración se recorre el string de prefijo para agregar el char. 
-     Vean de usar un StringBuilder. */
-        if(NodoActual==null) return;
-        for(int i=0; i<R; i++) {
+
+    /**
+     * Método recursivo que construye una lista de todas las claves en el Trie a
+     * partir del nodo dado.
+     *
+     * Complejidad: O(Σ |c|) para todos los c en C, donde C es el conjunto de
+     * todas las claves en el Trie y |c| es la longitud de cada clave.
+     *
+     * @param NodoActual el nodo actual del Trie desde el cual se comienza la
+     * búsqueda
+     * @param prefijo el prefijo acumulado hasta el nodo actual
+     * @param list la lista en la que se almacenan las claves encontradas
+     */
+    private void lista(TrieNodo NodoActual, StringBuilder prefijo, ArrayList<String> list) {
+        if (NodoActual == null) {
+            return;
+        }
+
+        for (int i = 0; i < R; i++) {
             TrieNodo nodo = NodoActual.hijo.get(i);
-            if(nodo!=null) {
-                String res = prefijo + (char)i;
-                if(nodo.end) list.add(res);
-                lista(nodo, res, list);
+            if (nodo != null) {
+                char caracter = (char) i;
+                prefijo.append(caracter);
+                if (nodo.end) {
+                    list.add(prefijo.toString());
+                }
+                lista(nodo, prefijo, list);
+                prefijo.deleteCharAt(prefijo.length() - 1); // Restaurar el prefijo
             }
         }
+
     }
+
 }
