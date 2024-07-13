@@ -21,30 +21,41 @@ public class SistemaSIU {
         nuevoSistema(infoMaterias); // Delegar la inicialización a otro método
     }
 
-    private void nuevoSistema(InfoMateria[] infoMaterias) {
-        /* Leon: falta poner que armar el trie con estudiantes es O(E) pq insertar es O(1)
-        podrían hacer el chequeo de si está definida la carrera con el método "esta"
-        En la complejidad no es |Mc|, es solo Mc, ya que se accede Mc veces a cada carrera en el trie. */
+    /**
+     * Inicializa el sistema SIU Guaraní con la información de materias y
+     * estudiantes.
+     *
+     * Complejidad: 
+     * Esta operación implica dar de alta cada carrera, entrar a cada carrera y
+     * dar de alta cada materia, registrar todas las materias equivalentes y
+     * registrar los estudiantes.
+     * 
+     * I) Dar de alta cada carrera y cada materia dentro de ella implica acceder
+     * a los tries de carreras y materias: 
+     * - Para cada carrera c en C, la complejidad de acceder a la carrera es O(|c|). 
+     * - Para cada materia m en Mc, la complejidad de acceder a la materia es O(|m|). 
+     * - Por lo tanto, la complejidad de esta parte es O(Σ (|c| * |Mc|)) 
+     * para todos los c en C, siendo Mc el conjunto de materias de la carrera y 
+     * |Mc| la cantidad de materias de esa carrera.
+     *
+     * II) Registrar materias equivalentes:  
+     * - Insertar un nombre de materia (n) en un trie de strings tiene
+     * complejidad O(|n|). 
+     * - Como esto se hace para cada materia m en M con todas sus materias
+     * equivalentes, la complejidad es O(Σ |n|) para todos los n en Nm 
+     * (conjunto de nombres de la materia m) y m en M (conjunto de materias).
+     *
+     * III) Registrar estudiantes:
+     * - Insertar cada estudiante en un trie es O(1) debido a la longitud fija 
+     * de las libretas universitarias. 
+     * - Registrar E estudiantes implica una complejidad O(E).
+     *
+     * @param infoMaterias un array de objetos InfoMateria que contiene la
+     * información de las materias y sus equivalentes
+     */
+    private void nuevoSistema(InfoMateria[] infoMaterias) {       
 
- /* Complejidad
-    →esta complejidad implica que tiene que dar de alta cada Carrera (en el Objeto de Clase SIU) 
-    y a la vez entrar a cada Carrera y dar de alta cada Materia de esta (en Objeto de Clase Carrera)  
-    y a la vez registrar todas las materias equivalentes (en cada Objeto de Clase Materia)
-    y la vez registrar los estudiantes (en el Objeto de Clase SIU) 
-
-    →se divide en tres partes
-    I) en nuestro diccionario tenemos como claves nombres de carreras, y su valor será el diccionario con claves de nombres de materias; 
-    como ambos diccionarios están implementados sobre tries, la complejidad está representada por la longitud del string más largo usado como clave, que en caso de carreras es |c|, y de las materias de esa carrera es |Mc|; 
-    y como hay que hacer esta operación para cada materia Mc de todas las carreras c ∈ C, se multiplican las complejidades
-
-    II) al dar de alta una materia m, guardamos en esta la referencia a los nombres n de todas sus materias equivalentes en Nm; 
-    esto lo hacemos en un trie de strings de nombres de materias n, para el cual insertar un nombre tiene complejidad proporcional a su longitud, es decir complejidad 𝑂(|n|); 
-    y como esto lo hacemos para cada materia m, depende del numero total de materias en M y del largo de cada uno de sus nombres
-
-    III) E es la cantidad total de estudiantes en todas las carreras de grado, y al no estar esta cantidad acotada, como los guardamos en un vector de strings cuando los vamos registrando, registrar E estudiantes implica realizar E inserciones, lo que da cuenta de la complejidad lineal de la operación
-         */
         for (InfoMateria equivalentes : infoMaterias) {
-
             // Extraigo los pares de cada InfoMateria 
             ParCarreraMateria[] pares = equivalentes.getParesCarreraMateria();
             // Instancio el Objeto Cursada para las materias equivalentes, tomando el primer nombre de materia de los pares como el estandar
