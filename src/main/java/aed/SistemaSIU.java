@@ -1,7 +1,5 @@
 package aed;
 
-import java.util.HashSet;
-
 public class SistemaSIU {
 
     private final DiccionarioDigital<String, Carrera> sistema;
@@ -81,17 +79,8 @@ public class SistemaSIU {
     }
 
     // Métodos adicionales para los tests
-    public HashSet<String> getCarreras() {
-        return new HashSet<>(sistema.claves());
-    }
-
     public Carrera getCarrera(String nombreCarrera) {
         return sistema.obtener(nombreCarrera);
-    }
-
-    public HashSet<String> getMateriasPorCarrera(String nombreCarrera) {
-        Carrera carrera = sistema.obtener(nombreCarrera);
-        return carrera != null ? new HashSet<>(carrera.getMaterias().claves()) : new HashSet<>();
     }
 
     @Override
@@ -214,19 +203,15 @@ public class SistemaSIU {
         return materiaActual.cursada.cupo;
     }
 
+    /**
+     * Este método tiene una complejidad de O(Σ |c|) para todos los c en C,
+     * donde C es el conjunto de todas las carreras |c| es la
+     * longitud de cada carrera.
+     * 
+     *  @return un array de strings que contiene todas las carreras, ordenado lexicograficamente
+     */
     public String[] carreras() {
-        /*
-        Idea, lo mismo para el de abajo:
-    
-        String[] res = []
-
-        for (carrera in sistema.claves) {
-            res.append(carrera)
-        }
-        
-        return res
-        */
-        throw new UnsupportedOperationException("Método no implementado aún");
+        return sistema.claves();
     }
 
     public String[] materias(String carrera) {
