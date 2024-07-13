@@ -215,7 +215,11 @@ public class SistemaSIU {
     }
 
     public String[] materias(String carrera) {
-        throw new UnsupportedOperationException("Método no implementado aún");
+        Carrera carreraActual = sistema.obtener(carrera);
+        DiccionarioDigital<String, Materia> diccionarioMaterias = carreraActual.getMaterias();
+        String[] listaMaterias = diccionarioMaterias.claves();
+
+        return listaMaterias;
     }
 
     public int materiasInscriptas(String estudiante) {
