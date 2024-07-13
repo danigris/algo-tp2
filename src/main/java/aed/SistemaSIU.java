@@ -57,14 +57,15 @@ public class SistemaSIU {
      */
     private void nuevoSistema(InfoMateria[] infoMaterias) {       
 
-        for (InfoMateria equivalentes : infoMaterias) {
-            // Extraigo los pares de cada InfoMateria 
-            ParCarreraMateria[] pares = equivalentes.getParesCarreraMateria();
+        for (InfoMateria infoMateria : infoMaterias) {
+            // Extraigo los pares de cada infoMateria 
+            ParCarreraMateria[] pares = infoMateria.getParesCarreraMateria();
+
             // Instancio el Objeto Cursada para las materias equivalentes, tomando el primer nombre de materia de los pares como el estandar
             String nombreMateriaEstandar = pares[0].getNombreMateria();
             Cursada cursada = new Cursada(nombreMateriaEstandar);
 
-            // Extraigo la data de carrera y nombreMateria de cada ParCarreraMateria
+            // Extraigo la data de carrera y nombreMateria de cada par de ParCarreraMateria
             for (ParCarreraMateria par : pares) {
                 String nombreCarrera = par.getCarrera();
                 String nombreMateria = par.getNombreMateria();
@@ -83,7 +84,7 @@ public class SistemaSIU {
                 materia.materiasDeLaCarrera = carrera;
 
                 // Agrego data de equivalentes a la materia (ver si esto es necesario, creo que puede serlo para cerrarMateria)
-                materia.cursada.equivalentes = equivalentes;
+                materia.cursada.equivalentes = infoMateria;
             }
         }
 
