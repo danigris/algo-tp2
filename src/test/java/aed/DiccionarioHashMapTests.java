@@ -36,8 +36,10 @@ public class DiccionarioHashMapTests {
     @Test
     public void testBorrar() {
         diccionario.definir("cuatro", 4);
+        diccionario.definir("cuatroDosVeces", 44);
         diccionario.borrar("cuatro");
         assertFalse(diccionario.esta("cuatro"), "La clave 'cuatro' debería haber sido borrada.");
+        assertTrue(diccionario.esta("cuatroDosVeces"), "La clave 'cuatroDosVeces' no debería haber sido borrada.");
     }
 
     @Test

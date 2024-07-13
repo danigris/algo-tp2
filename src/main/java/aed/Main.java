@@ -59,7 +59,7 @@ public class Main {
         sistema.agregarDocente(CargoDocente.PROF,"Ciencias de Datos", "Algoritmos3");
 
         // Calcula cupos de cada materia en cada carrera
-        for (String nombreCarrera : sistema.getCarreras()) {
+        for (String nombreCarrera : sistema.carreras()) {
             Carrera carrera = sistema.getCarrera(nombreCarrera);
             for (String nombreMateria : carrera.getMaterias().claves()) {
                 Materia materia = carrera.getMaterias().obtener(nombreMateria);
@@ -68,7 +68,7 @@ public class Main {
         }
 
         // Imprimir información de cada materia en cada carrera
-        for (String nombreCarrera : sistema.getCarreras()) {
+        for (String nombreCarrera : sistema.carreras()) {
             Carrera carrera = sistema.getCarrera(nombreCarrera);
             for (String nombreMateria : carrera.getMaterias().claves()) {
                 Materia materia = carrera.getMaterias().obtener(nombreMateria);
