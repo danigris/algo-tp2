@@ -308,9 +308,20 @@ public class SistemaSIU {
         return listaMaterias;
     }
 
+    /**
+     * Este método devuelve la cantidad de materias en las que un estudiante 
+     * está inscripto.
+     *
+     * Complejidad: O(1), ya que inscripcionesPorEstudiante es un Diccionario 
+     * Digital y la longitud de la libreta universitaria -que representa a cada 
+     * estudiante- está acotada a un tamaño fijo (6 caracteres), lo que permite 
+     * encontrar el número de inscripciones en tiempo constante.
+     *
+     * @param estudiante la libreta universitaria del estudiante
+     * @return la cantidad de materias en las que el estudiante está inscripto
+     */
     public int materiasInscriptas(String estudiante) {
-        // Complejidad: Recordando que inscripcionesPorEstudiante es un Diccionario Digital, 
-        // como el largo de la libreta universitaria esta acotada (6) encontrar el cargo que limita el cupo es O(1)
+       
         return this.inscripcionesPorEstudiante.obtener(estudiante);
     }
 }
