@@ -2,6 +2,29 @@ package aed;
 
 import java.util.ArrayList;
 
+/**
+ * Implementación de un Diccionario utilizando un Trie.
+ *
+ * Invariante de Representación: 
+ * - Raíz no nula: El nodo raíz (root) nunca debe ser nulo.
+ * - Nodos hijos inicializados: Cada nodo (TrieNodo) debe tener un ArrayList de
+ * nodos hijos (hijo) de tamaño R (256 para el conjunto de caracteres extendido
+ * ASCII). Cada entrada en el ArrayList debe ser o bien null o un nodo válido.
+ * - Marcadores de fin de palabra: El atributo end de un TrieNodo debe ser true
+ * si y solo si ese nodo marca el final de una palabra que ha sido agregada al
+ * conjunto.
+ * - Contador de elementos correcto: La variable elementos debe reflejar
+ * correctamente el número de palabras únicas almacenadas en el trie. Esto
+ * significa que elementos debe ser igual al número de nodos en el trie donde
+ * end es true.
+ * - Integridad de palabras: Todas las palabras representadas en el trie deben
+ * estar correctamente formadas y accesibles a través del trie. Es decir, cada
+ * palabra agregada al conjunto debe poder ser reconstruida siguiendo los hijos 
+ * desde la raíz hasta un nodo con end igual a true.
+ * - No llego por dos claves al mismo nodo / los nodos tienen un solo padre 
+ * salvo la raíz (que no tiene padre)
+ * - No hay nodos inútiles / los nodos, si no tienen significado, tienen hijos
+ */
 public class DiccionarioDigital<K, V> {
 
     private final TrieNodo root;
