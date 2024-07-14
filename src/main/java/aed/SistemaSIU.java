@@ -100,14 +100,17 @@ public class SistemaSIU {
                     sistema.definir(nombreCarrera, carrera);
                 }
                 // Instancio un nuevo objeto Materia y la agrego a la carrera
-                Materia materia = new Materia(nombreCarrera, nombreMateria, cursada);
-                carrera.agregarMateria(materia);
+                Materia materia = carrera.getMaterias().obtener(nombreMateria);
+                if (materia == null) {
+                    materia = new Materia(nombreCarrera, nombreMateria, cursada);
+                    carrera.agregarMateria(materia);
+                }
 
                 // Agrego referencia al diccionario de la carrera que contiene la materia actual
                 materia.materiasDeLaCarrera = carrera;
 
                 // Agrego data de equivalentes a la materia
-                materia.cursada.equivalentes.definir(par.getNombreMateria(),materia);
+                materia.cursada.equivalentes.agregar(par.getNombreMateria());
             }
         }
 
@@ -295,24 +298,24 @@ public class SistemaSIU {
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
         // Resto inscripcion a cada estudiante
-        for (String estudiante : materiaActual.cursada.estudiantes) { // Arraylist
+        for (String estudiante : materiaActual.cursada.estudiantes) { 
         Integer totalPrevio = this.inscripcionesPorEstudiante.obtener(estudiante);
         this.inscripcionesPorEstudiante.definir(estudiante, totalPrevio - 1);
         }
 
-        // Borra la materia en cada equivalencia
-        //materiasdelacarrera es mas bien al reves, materia.(carrera de la materia)
-
-        for (String nombreEquivalencia : materiaActual.cursada.equivalentes.claves()) { 
-            Materia materiaEquivalencia = materiaActual.cursada.equivalentes.obtener(nombreEquivalencia);
-            Carrera carreraDeEquivalencia = materiaEquivalencia.materiasDeLaCarrera;
-            carreraDeEquivalencia.getMaterias().borrar(nombreEquivalencia);
+        // Borra la materia en cada equivalencia     
+        for (String nombreEquivalencia : materiaActual.cursada.equivalentes.obtenerElementos()) {
+            for (String nombreCarrera : sistema.claves()) {
+                Carrera carreraEquivalente = sistema.obtener(nombreCarrera);
+                Materia materiaEquivalente = carreraEquivalente.getMaterias().obtener(nombreEquivalencia);
+                if (materiaEquivalente != null) {
+                    carreraEquivalente.getMaterias().borrar(nombreEquivalencia);
+                }
+            }
         }
 
-        //Innecesario, la borra arriba
-        /* // Borra la materia en la Carrera de parametro de entrada
-        carreraActual.getMaterias().borrar(materia); 
-        System.out.println(materiaActual.cursada.equivalentes.toString()); */
+        carreraActual.getMaterias().borrar(materia);
+
     }
 
     /**
