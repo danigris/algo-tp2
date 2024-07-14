@@ -91,8 +91,8 @@ public class SistemaSIU {
                 // Agrego referencia al diccionario de la carrera que contiene la materia actual
                 materia.materiasDeLaCarrera = carrera;
 
-                // Agrego data de equivalentes a la materia (ver si esto es necesario, creo que puede serlo para cerrarMateria)
-                materia.cursada.equivalentes = infoMateria;
+                // Agrego data de equivalentes a la materia
+                materia.cursada.equivalentes.agregar(par.getNombreMateria());
             }
         }
 
