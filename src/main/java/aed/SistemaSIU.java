@@ -1,5 +1,20 @@
 package aed;
 
+/**
+ * Clase que representa el Sistema SIU con carreras y estudiantes.
+ *
+ * Invariante de Representación:  
+ * - El diccionario `sistema` debe ser una instancia no nula de la clase
+ * DiccionarioDigital, donde las claves son los nombres de las carreras y los
+ * valores son objetos de la clase Carrera. 
+ * - El arreglo de `estudiantes` no puede estar vacío y sus elementos deben tener 
+ * un formato y un largo fijo (son las libretas universitarias). 
+ * - El diccionario `inscripcionesPorEstudiante` debe ser una instancia no nula
+ * de la clase DiccionarioDigital, donde las claves son las libretas
+ * univesitarias de los estudiantes y los valores son enteros no negativos que
+ * representan la cantidad de materias a las que se encuentran inscriptos.
+ *
+ */
 public class SistemaSIU {
 
     private final DiccionarioDigital<String, Carrera> sistema;
