@@ -1,7 +1,5 @@
 package aed;
 
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -35,55 +33,63 @@ public class SistemaSIUTestsPropio {
 
         sistema.toString();
 
-
         // Verificar que todas las carreras están presentes
-        Set<String> carreras = sistema.getCarreras();
-        String[] carrerasEsperadas = {"Ciencias de la Computación", "Ciencias de Datos", "Ciencias Físicas", "Ciencias Químicas", "Ciencias Matemáticas", "Ciencias Biológicas"};
-        for (String carrera : carrerasEsperadas) {
-            assertTrue(carreras.contains(carrera), "Falta la carrera: " + carrera);
-        }
+        String[] carreras = sistema.carreras();
+        String[] carrerasEsperadas = {"Ciencias Biológicas", "Ciencias Físicas", "Ciencias Matemáticas", "Ciencias Químicas", "Ciencias de Datos", "Ciencias de la Computación"};
+        assertArrayEquals(carrerasEsperadas, carreras);
 
         // Verificar que todas las materias están presentes para cada carrera
-        Set<String> materiasCienciasCompu = sistema.getMateriasPorCarrera("Ciencias de la Computación");
-        String[] materiasEsperadasCompu = {"Intro a la Programación", "Algoritmos", "Técnicas de Diseño de Algoritmos", "Análisis I"};
-        for (String materia : materiasEsperadasCompu) {
-            assertTrue(materiasCienciasCompu.contains(materia), "Falta la materia: " + materia);
-        }
+        String[] materiasCienciasCompu = sistema.materias("Ciencias de la Computación");
+        String[] materiasEsperadasCompu = {
+            "Algoritmos",
+            "Análisis I",
+            "Intro a la Programación",
+            "Técnicas de Diseño de Algoritmos"
+        };
+        assertArrayEquals(materiasEsperadasCompu, materiasCienciasCompu);
 
-        Set<String> materiasCienciasDatos = sistema.getMateriasPorCarrera("Ciencias de Datos");
-        String[] materiasEsperadasDatos = {"Algoritmos1", "Algoritmos2", "Algoritmos3", "Análisis I", "Análisis II"};
-        for (String materia : materiasEsperadasDatos) {
-            assertTrue(materiasCienciasDatos.contains(materia), "Falta la materia: " + materia);
-        }
+        String[] materiasCienciasDatos = sistema.materias("Ciencias de Datos");
+        String[] materiasEsperadasDatos = {
+            "Algoritmos1",
+            "Algoritmos2",
+            "Algoritmos3",
+            "Análisis I",
+            "Análisis II"
+        };
+        assertArrayEquals(materiasEsperadasDatos, materiasCienciasDatos);
 
         // Repite las verificaciones para las demás carreras...
         // Ciencias Físicas
-        Set<String> materiasCienciasFisicas = sistema.getMateriasPorCarrera("Ciencias Físicas");
-        String[] materiasEsperadasFisicas = {"Matemática 1", "Matemática 3"};
-        for (String materia : materiasEsperadasFisicas) {
-            assertTrue(materiasCienciasFisicas.contains(materia), "Falta la materia: " + materia);
-        }
+        String[] materiasCienciasFisicas = sistema.materias("Ciencias Físicas");
+        String[] materiasEsperadasFisicas = {
+            "Matemática 1",
+            "Matemática 3"
+        };
+        assertArrayEquals(materiasEsperadasFisicas, materiasCienciasFisicas);
 
         // Ciencias Químicas
-        Set<String> materiasCienciasQuimicas = sistema.getMateriasPorCarrera("Ciencias Químicas");
-        String[] materiasEsperadasQuimicas = {"Análisis Matemático I", "Análisis Matemático II", "Química General"};
-        for (String materia : materiasEsperadasQuimicas) {
-            assertTrue(materiasCienciasQuimicas.contains(materia), "Falta la materia: " + materia);
-        }
+        String[] materiasCienciasQuimicas = sistema.materias("Ciencias Químicas");
+        String[] materiasEsperadasQuimicas = {
+            "Análisis Matemático I",
+            "Análisis Matemático II",
+            "Química General"
+        };
+        assertArrayEquals(materiasEsperadasQuimicas, materiasCienciasQuimicas);
 
         // Ciencias Matemáticas
-        Set<String> materiasCienciasMatematicas = sistema.getMateriasPorCarrera("Ciencias Matemáticas");
-        String[] materiasEsperadasMatematicas = {"Análisis I", "Análisis II"};
-        for (String materia : materiasEsperadasMatematicas) {
-            assertTrue(materiasCienciasMatematicas.contains(materia), "Falta la materia: " + materia);
-        }
+        String[] materiasCienciasMatematicas = sistema.materias("Ciencias Matemáticas");
+        String[] materiasEsperadasMatematicas = {
+            "Análisis I",
+            "Análisis II"
+        };
+        assertArrayEquals(materiasEsperadasMatematicas, materiasCienciasMatematicas);
 
         // Ciencias Biológicas
-        Set<String> materiasCienciasBiologicas = sistema.getMateriasPorCarrera("Ciencias Biológicas");
-        String[] materiasEsperadasBiologicas = {"Química General e Inorgánica 1"};
-        for (String materia : materiasEsperadasBiologicas) {
-            assertTrue(materiasCienciasBiologicas.contains(materia), "Falta la materia: " + materia);
-        }
+        String[] materiasCienciasBiologicas = sistema.materias("Ciencias Biológicas");
+        String[] materiasEsperadasBiologicas = {
+            "Química General e Inorgánica 1"
+        };
+        assertArrayEquals(materiasEsperadasBiologicas, materiasCienciasBiologicas);
 
     }
 
