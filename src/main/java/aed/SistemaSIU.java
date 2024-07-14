@@ -1,6 +1,5 @@
 package aed;
 
-
 public class SistemaSIU {
 
     private final DiccionarioDigital<String, Carrera> sistema;
@@ -26,25 +25,35 @@ public class SistemaSIU {
      * Inicializa el sistema SIU Guaraní con la información de materias y
      * estudiantes.
      *
-     * Complejidad: 
+     * Complejidad: O(Σ(c∈C) |c| * |Mc| + Σ(m∈M) Σ(n∈Nm) |n| + E)
+     * 
      * Esta operación implica dar de alta cada carrera, entrar a cada carrera y
      * dar de alta cada materia, registrar todas las materias equivalentes y
      * registrar los estudiantes.
      * 
      * I) Dar de alta cada carrera y cada materia dentro de ella implica acceder
      * a los tries de carreras y materias: 
-     * - Para cada carrera c en C, la complejidad de acceder a la carrera es O(|c|). 
-     * - Para cada materia m en Mc, la complejidad de acceder a la materia es O(|m|). 
-     * - Por lo tanto, la complejidad de esta parte es O(Σ (|c| * |Mc|)) 
-     * para todos los c en C, siendo Mc el conjunto de materias de la carrera y 
-     * |Mc| la cantidad de materias de esa carrera.
+     * - Para cada carrera c en C, la complejidad de acceder a la carrera es
+     * O(|c|). 
+     * - Dentro de cada carrera c, hay |Mc| materias (|Mc| es la longitud del
+     * conjunto Mc, es decir, el número de materias en la carrera c). Por lo
+     * tanto, accedemos accedemos al trie de la carrera |Mc| veces para
+     * registrar todas sus materias. 
+     * - Además, para cada materia m en Mc, la complejidad de acceder a la
+     * materia es O(|m|). 
+     * - Por lo tanto, la complejidad de esta parte es: 
+     * O(Σ(c∈C) (|c| * |Mc|) + Σ(m∈Mc) |m|).      
      *
      * II) Registrar materias equivalentes:  
      * - Insertar un nombre de materia (n) en un trie de strings tiene
      * complejidad O(|n|). 
+     * - Este costo O(|n|) se debe a que cada nombre de materia debe ser
+     * insertado en el trie de equivalentes de la materia estandarizada.      
      * - Como esto se hace para cada materia m en M con todas sus materias
-     * equivalentes, la complejidad es O(Σ |n|) para todos los n en N_m 
-     * (conjunto de nombres de la materia m) y m en M (conjunto de materias).
+     * equivalentes, la complejidad es O(Σ(m∈M) Σ(n∈Nm) |n|). 
+     * - Vale aclarar que este término también incluye el costo O(Σ(m∈Mc) |m|)
+     * de la primera parte, ya que registrar todas las materias equivalentes
+     * implica procesar todos los nombres de las materias.
      *
      * III) Registrar estudiantes:
      * - Insertar cada estudiante en un trie es O(1) debido a la longitud fija 
