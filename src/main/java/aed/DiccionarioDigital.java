@@ -101,7 +101,7 @@ public class DiccionarioDigital<K, V> {
         TrieNodo ultimoNodo = root;
         int ultimoIndice = 0;
 
-        // Encontrar ultimo nodo util, buscar nodo de clave hasta 
+        // Encontrar ultimo nodo util, busqueda de nodo de clave hasta su padre
         for (int i = 0; i < word.length()-1; i++) {
             char ch = word.charAt(i);
             TrieNodo nodo = NodoActual.hijo.get(ch);

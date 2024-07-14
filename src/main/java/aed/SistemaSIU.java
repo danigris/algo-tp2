@@ -275,6 +275,7 @@ public class SistemaSIU {
      * @param carrera el nombre de la carrera
      */
     public void cerrarMateria(String materia, String carrera) {
+        
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
@@ -288,7 +289,7 @@ public class SistemaSIU {
 
 
         // Borra la materia en la Carrera de parametro de entrada
-        carreraActual.getMaterias().borrar(materia);
+        carreraActual.getMaterias().borrar(materia); 
     }
 
     /**
