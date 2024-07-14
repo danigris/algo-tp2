@@ -262,7 +262,7 @@ public class SistemaSIU {
      * Complejidad: O(|c| + |m| + Σ(n∈Nm) |n|  + E_m)
      * donde |c| es la longitud del nombre de la carrera, |m| es la longitud 
      * del nombre de la materia, Σ(n∈Nm) |n| es el largo del conjunto de nombres de la materia m
-     * y E
+     * y E_m son los estudiantes inscriptos a la materia
      * 
      * - Recorrer el trie de la Carrera: O(|c|) 
      * - Recorrer el trie de la Materia: O(|m|) 
