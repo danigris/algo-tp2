@@ -2,6 +2,21 @@ package aed;
 
 import java.util.ArrayList;
 
+/**
+ * Clase que representa la cursada de una materia.
+ *
+ * Invariante de Representación: 
+ * - El nombre estándar de la materia no puede ser nulo o un string vacío. 
+ * - El conjunto de equivalentes debe ser una instancia no nula de ConjuntoDigital.
+ * - La lista de estudiantes debe ser una instancia no nula de ArrayList de Strings y
+ *   sus elementos deben tener largo fijo (son las libretas universitarias). 
+ * - La lista de docentes debe ser una instancia no nula de ArrayList de Integers y
+ *   tener siempre cuatro elementos no negativos.
+ * - El cupo debe ser un entero no negativo. 
+ * - El ńumero de inscriptos debe ser un entero no negativo y no puede
+ *   ser mayor que el cupo.
+ * 
+ */
 public class Cursada {
 
     String nombreMateriaEstandar;
@@ -59,7 +74,7 @@ public class Cursada {
         StringBuilder sb = new StringBuilder();
         sb.append("\n-Info Clase Cursada: \n");
         sb.append("Nombre Materia Estandar: ").append(nombreMateriaEstandar).append("\n");
-        sb.append("Equivalentes: ").append(equivalentes.toString()).append("\n"); 
+        sb.append("Equivalentes: ").append(equivalentes.toString()).append("\n");
         sb.append("\nEstudiantes: ").append(estudiantes).append("\n");
         sb.append("Docentes: ").append(docentes).append("\n");
         sb.append("Cupo: ").append(cupo).append("\n");
