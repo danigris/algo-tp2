@@ -271,7 +271,7 @@ public class SistemaSIUTests {
     @Test
     void cerrar_facultad(){
         SistemaSIU sistema = new SistemaSIU(infoMaterias, estudiantes);
-        //realizar_inscripciones(sistema);
+        realizar_inscripciones(sistema);
         cargar_docentes(sistema, 20, 10, 5, 2);
 
         sistema.cerrarMateria("Intro a la Programación", "Ciencias de la Computación");
