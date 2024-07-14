@@ -3,6 +3,11 @@ package aed;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,5 +64,19 @@ public class ConjuntoDigitalTests {
 
         // Este test fallará si el tamaño del conjunto no es 1.
         assertEquals(1, conjunto.tamaño(), "El tamaño del conjunto debería ser 1 después de agregar duplicados.");
+    }
+
+    @Test
+    void testObtenerElementos() {
+        conjunto.agregar("Algoritmos");
+        conjunto.agregar("Estructuras");
+        conjunto.agregar("Programación");
+
+        List<String> expectedElements = Arrays.asList("Algoritmos", "Estructuras", "Programación");
+        ArrayList<String> elementos = conjunto.obtenerElementos();
+
+        assertEquals(expectedElements.size(), elementos.size(), "El tamaño del ArrayList debería ser 3.");
+        assertTrue(elementos.containsAll(expectedElements), "El ArrayList debería contener todos los elementos esperados.");
+        assertTrue(expectedElements.containsAll(elementos), "El ArrayList no debería contener elementos no esperados.");
     }
 }

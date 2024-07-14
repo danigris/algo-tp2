@@ -130,4 +130,27 @@ public class ConjuntoDigital implements Conjunto<String> {
         }
     }
 
+    public ArrayList<String> obtenerElementos() {
+        ArrayList<String> elementosList = new ArrayList<>();
+        obtenerElementosHelper(root, new StringBuilder(), elementosList);
+        return elementosList;
+    }
+
+    private void obtenerElementosHelper(TrieNodo nodo, StringBuilder prefijo, ArrayList<String> lista) {
+        if (nodo == null) {
+            return;
+        }
+        if (nodo.end) {
+            lista.add(prefijo.toString());
+        }
+        for (int i = 0; i < R; i++) {
+            TrieNodo hijo = nodo.hijo.get(i);
+            if (hijo != null) {
+                prefijo.append((char) i);
+                obtenerElementosHelper(hijo, prefijo, lista);
+                prefijo.deleteCharAt(prefijo.length() - 1); // Backtrack
+            }
+        }
+    }
+
 }
