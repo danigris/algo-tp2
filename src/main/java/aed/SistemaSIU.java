@@ -301,10 +301,11 @@ public class SistemaSIU {
         }
 
         // Borra la materia en cada equivalencia
-
+        System.out.println(materiaActual.cursada.equivalentes.toString());
 
         // Borra la materia en la Carrera de parametro de entrada
         carreraActual.getMaterias().borrar(materia); 
+        System.out.println(materiaActual.cursada.equivalentes.toString());
     }
 
     /**
