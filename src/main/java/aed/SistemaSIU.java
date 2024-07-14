@@ -1,7 +1,5 @@
 package aed;
 
-import javax.swing.border.MatteBorder;
-
 public class SistemaSIU {
 
     private final DiccionarioDigital<String, Carrera> sistema;
