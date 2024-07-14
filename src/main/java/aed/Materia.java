@@ -1,7 +1,5 @@
 package aed;
 
-import java.util.ArrayList;
-
 public class Materia {
 
     String nombreCarrera;
