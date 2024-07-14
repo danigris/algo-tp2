@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Cursada {
 
     String nombreMateriaEstandar;
-    InfoMateria equivalentes; // TODO al 17/6: esto tiene que cambiarse a un trie<string> (sin values! es un trie generico) para cumplir la segunda expresion de la complejidad de nuevoSistema
+    ConjuntoDigital equivalentes;
     ArrayList<String> estudiantes;
     ArrayList<Integer> docentes;
     int cupo;
@@ -13,7 +13,7 @@ public class Cursada {
 
     public Cursada(String nombreMateria) {
         this.nombreMateriaEstandar = nombreMateria;
-        this.equivalentes = new InfoMateria(new ParCarreraMateria[]{}); // Inicialización con un arreglo vacío
+        this.equivalentes = new ConjuntoDigital();
         this.estudiantes = new ArrayList<>();
         this.docentes = inicializarDocentes();
         this.cupo = 0;
@@ -34,7 +34,7 @@ public class Cursada {
         return this.nombreMateriaEstandar;
     }
 
-    public InfoMateria getEquivalentes() {
+    public ConjuntoDigital getEquivalentes() {
         return this.equivalentes;
     }
 
@@ -59,10 +59,7 @@ public class Cursada {
         StringBuilder sb = new StringBuilder();
         sb.append("\n-Info Clase Cursada: \n");
         sb.append("Nombre Materia Estandar: ").append(nombreMateriaEstandar).append("\n");
-        sb.append("Equivalentes: ");
-        for (ParCarreraMateria par : equivalentes.getParesCarreraMateria()) {
-            sb.append(par.getCarrera()).append(" - ").append(par.getNombreMateria()).append(", ");
-        }
+        sb.append("Equivalentes: ").append(equivalentes.toString()).append("\n"); 
         sb.append("\nEstudiantes: ").append(estudiantes).append("\n");
         sb.append("Docentes: ").append(docentes).append("\n");
         sb.append("Cupo: ").append(cupo).append("\n");
