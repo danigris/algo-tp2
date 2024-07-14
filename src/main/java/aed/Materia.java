@@ -1,5 +1,17 @@
 package aed;
 
+/**
+ * Clase que representa una materia en una carrera.
+ *
+ * Invariante de Representación: 
+ * 
+ * - El nombre de la carrera no puede ser nulo o un string vacío.   
+ * - El nombre de la materia no puede ser nulo o un string vacío.   
+ * - La referencia a la cursada debe ser una instancia no nula de la clase Cursada.
+ * - La referencia a la carrera que contiene esta materia debe ser una instancia
+ *   no nula de la clase Carrera.
+ * 
+ */
 public class Materia {
 
     String nombreCarrera;
