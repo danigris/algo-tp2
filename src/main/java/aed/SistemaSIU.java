@@ -301,8 +301,14 @@ public class SistemaSIU {
         }
 
         // Borra la materia en cada equivalencia
-        System.out.println(materiaActual.cursada.equivalentes.toString());
+        //materiasdelacarrera es mas bien al reves, materia.(carrera de la materia)
+        
+        /*for (String nombreEquivalencia : materiaActual.cursada.equivalentes.obtenerElementos()) {
+            Materia materiaEquivalente 
+            Carrera carreraDeEquivalencia = materiaEquivalente.materiasDeLaCarrera;
+            carreraDeEquivalencia.getMaterias().borrar(nombreEquivalencia);
 
+        }*/
         // Borra la materia en la Carrera de parametro de entrada
         carreraActual.getMaterias().borrar(materia); 
         System.out.println(materiaActual.cursada.equivalentes.toString());
