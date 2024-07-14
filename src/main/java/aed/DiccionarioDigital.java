@@ -2,13 +2,13 @@ package aed;
 
 import java.util.ArrayList;
 
-public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
+public class DiccionarioDigital<K, V> {
 
     private final TrieNodo root;
     private Integer elementos;
-    private static final int R = 256; // extended ASCII, solo usamos mayus y minus (incluyendo Ññ) y espacios, pero creo va 256 igual
+    private static final int R = 256; // extended ASCII, solo usamos mayus y minus (incluyendo Ññ) y espacios
 
-    private class TrieNodo {//} extends Comparable<T>> innecesario
+    private class TrieNodo {
 
         V valor;
         boolean end;
@@ -16,7 +16,7 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
 
         private TrieNodo(V valor) {
             this.hijo = new ArrayList<>(R);
-            for (int i = 0; i < R; i++) {   // inicializar en null, si no no funciona porque length = 0
+            for (int i = 0; i < R; i++) {   // inicializar en null (si no, no funciona porque length = 0)
                 hijo.add(null);
             }
             this.end = false;
@@ -31,9 +31,10 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
             int res = 0;
             for (int i = 0; i < R; i++) {
                 TrieNodo nodo = this.hijo.get(i);
-                if (nodo.valor != null) {
-                    res++;
+                if (nodo != null) {
+                        res++;
                 }
+
             }
             return res;
         }
@@ -48,7 +49,7 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
         return (this.elementos == 0);
     }
 
-    public void definir(String word, V v) {    // acá es donde necesito poner un tipo paramétrico
+    public void definir(String word, V v) {
 
         TrieNodo NodoActual = this.root;
         for (int i = 0; i < word.length(); i++) {
@@ -82,7 +83,7 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
         return NodoActual.end;
     }
 
-    public V obtener(String word) {       // ver como hago para que este objeto sea V
+    public V obtener(String word) {
         TrieNodo NodoActual = root;
         for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);
@@ -95,14 +96,13 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
         return NodoActual.obtenerValor();
     }
 
-    public boolean borrar(String word) { // Leon: no mantiene el invariante del mismo (mantiene nodos inutiles)
+    public boolean borrar(String word) {
         TrieNodo NodoActual = root;
         TrieNodo ultimoNodo = root;
         int ultimoIndice = 0;
-        //ver caso word.lenght=1
 
         // Encontrar ultimo nodo util, buscar nodo de clave hasta 
-        for (int i = 0; i < word.length()-1; i++) { // i = ultimoIndice
+        for (int i = 0; i < word.length()-1; i++) {
             char ch = word.charAt(i);
             TrieNodo nodo = NodoActual.hijo.get(ch);
             if (nodo == null) {
@@ -116,7 +116,7 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
         }
 
         // Ultima iteraccion (lo mismo pero sin seguir buscando ultimoNodo)
-        char ch = word.charAt(word.length());
+        char ch = word.charAt(word.length()-1);
         TrieNodo nodo = NodoActual.hijo.get(ch);
         if (nodo == null) {
             return false;
@@ -129,8 +129,7 @@ public class DiccionarioDigital<K, V> /* implements Diccionario <K,V> */ {
             this.elementos = this.elementos - 1;
             // Borrado de hijos
             if (NodoActual.cantidadDeHijos() == 0) { // Rama es inutil solo si el Nodo de la clave no llevaba a otras claves
-                TrieNodo Nodo = ultimoNodo.hijo.get(word.charAt(ultimoIndice)); // El hijo del ultimo nodo que direccionaba a clave
-                Nodo = null;
+                ultimoNodo.hijo.set(word.charAt(ultimoIndice), null); // El hijo del ultimo nodo que direccionaba a clave
             }
             return true;
         }

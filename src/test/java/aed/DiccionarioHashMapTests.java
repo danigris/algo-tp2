@@ -8,11 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DiccionarioHashMapTests {
-    private DiccionarioHashMap<String, Integer> diccionario;
+    private DiccionarioDigital<String,Integer> diccionario;
 
     @BeforeEach
     public void setUp() {
-        diccionario = new DiccionarioHashMap<>();
+        diccionario = new DiccionarioDigital<>();
     }
 
     @Test
@@ -36,10 +36,18 @@ public class DiccionarioHashMapTests {
     @Test
     public void testBorrar() {
         diccionario.definir("cuatro", 4);
+        diccionario.definir("cua", 0);
         diccionario.definir("cuatroDosVeces", 44);
         diccionario.borrar("cuatro");
         assertFalse(diccionario.esta("cuatro"), "La clave 'cuatro' debería haber sido borrada.");
         assertTrue(diccionario.esta("cuatroDosVeces"), "La clave 'cuatroDosVeces' no debería haber sido borrada.");
+        diccionario.definir("tres", 3);
+        diccionario.definir("tresss", 333);
+        diccionario.borrar("tresss");
+        assertTrue(diccionario.esta("tres"), "La clave 'tres' no debería haber sido borrada.");
+        diccionario.definir("t", 0);
+        diccionario.borrar("t");
+        assertTrue(diccionario.esta("tres"), "La clave 'tres' no debería haber sido borrada.");
     }
 
     @Test

@@ -1,6 +1,5 @@
 package aed;
 
-import javax.swing.border.MatteBorder;
 
 public class SistemaSIU {
 
@@ -44,7 +43,7 @@ public class SistemaSIU {
      * - Insertar un nombre de materia (n) en un trie de strings tiene
      * complejidad O(|n|). 
      * - Como esto se hace para cada materia m en M con todas sus materias
-     * equivalentes, la complejidad es O(Σ |n|) para todos los n en Nm 
+     * equivalentes, la complejidad es O(Σ |n|) para todos los n en N_m 
      * (conjunto de nombres de la materia m) y m en M (conjunto de materias).
      *
      * III) Registrar estudiantes:
@@ -248,36 +247,41 @@ public class SistemaSIU {
         return res;
     }
 
+    /**
+     * Este método cierra una materia y desinscribe a sus estudiantes
+     * para cada carrera que la tenga 
+     *
+     * Complejidad: O(|c| + |m| + Σ |n| + E_m) para todos los n en N_m, 
+     * donde |c| es la longitud del nombre de la carrera, |m| es la longitud 
+     * del nombre de la materia, Σ |n| es el largo del conjunto de nombres de la materia m
+     * y E
+     * 
+     * - Recorrer el trie de la Carrera: O(|c|) 
+     * - Recorrer el trie de la Materia: O(|m|) 
+* - Recorrer  O(Σ |n|) !!! falta ver que se recorre
+     * - Reducir en 1 la cantidad de inscripciones de los estudiantes que estaban 
+     * inscriptos a la materia: O(E_m)
+* - El resto son operaciones con complejidad O(1) !!! por ahora no hay ninguna con O(1)
+     *
+     * @param materia el nombre de la materia
+     * @param carrera el nombre de la carrera
+     * @return true si la cantidad de estudiantes excede el cupo, false en caso contrario
+     */
     public void cerrarMateria(String materia, String carrera) {
         Carrera carreraActual = sistema.obtener(carrera);
         Materia materiaActual = carreraActual.getMaterias().obtener(materia);
 
-        /* 
-        ParCarreraMateria[] pares = equivalentes.getParesCarreraMateria();
-        Materia.cursada.equivalentes 
-        // Extraigo la data de carrera y nombreMateria de cada ParCarreraMateria
-        for (ParCarreraMateria par : pares) {
-            String nombreCarrera = par.getCarrera();
-            String nombreMateria = par.getNombreMateria();
-
-            // Si la carrera no existe en el sistema, la creo
-            Carrera carrera = sistema.obtener(nombreCarrera);
-            if (carrera == null) {
-                carrera = new Carrera(nombreCarrera);
-                sistema.definir(nombreCarrera, carrera);
-            }
-            // Instancio un nuevo objeto Materia y la agrego a la carrera
-            Materia materia = new Materia(nombreCarrera, nombreMateria, cursada);
-            carrera.agregarMateria(materia);
-
-            // Agrego referencia al diccionario de la carrera que contiene la materia actual
-            materia.materiasDeLaCarrera = carrera;
-
-            // Agrego data de equivalentes a la materia (ver si esto es necesario, creo que puede serlo para cerrarMateria)
-            materia.cursada.equivalentes = equivalentes;
+        // Resto inscripcion a cada estudiante
+        for (String estudiante : materiaActual.cursada.estudiantes) { // Arraylist
+        Integer totalPrevio = this.inscripcionesPorEstudiante.obtener(estudiante);
+        this.inscripcionesPorEstudiante.definir(estudiante, totalPrevio - 1);
         }
-            */
-        throw new UnsupportedOperationException("Método no implementado aún");
+
+        // Borra la materia en cada equivalencia
+
+
+        // Borra la materia en la Carrera de parametro de entrada
+        carreraActual.getMaterias().borrar(materia);
     }
 
     /**
