@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class Cursada {
 
     String nombreMateriaEstandar;
-    ConjuntoDigital equivalentes;
+    DiccionarioDigital<String,Materia> equivalentes;
     ArrayList<String> estudiantes;
     ArrayList<Integer> docentes;
     int cupo;
@@ -28,7 +28,7 @@ public class Cursada {
 
     public Cursada(String nombreMateria) {
         this.nombreMateriaEstandar = nombreMateria;
-        this.equivalentes = new ConjuntoDigital();
+        this.equivalentes = new DiccionarioDigital();
         this.estudiantes = new ArrayList<>();
         this.docentes = inicializarDocentes();
         this.cupo = 0;
@@ -49,9 +49,9 @@ public class Cursada {
         return this.nombreMateriaEstandar;
     }
 
-    public ConjuntoDigital getEquivalentes() {
+    /*public ConjuntoDigital getEquivalentes() {
         return this.equivalentes;
-    }
+    }*/
 
     public ArrayList<String> getEstudiantes() {
         return this.estudiantes;

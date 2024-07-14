@@ -107,7 +107,7 @@ public class SistemaSIU {
                 materia.materiasDeLaCarrera = carrera;
 
                 // Agrego data de equivalentes a la materia
-                materia.cursada.equivalentes.agregar(par.getNombreMateria());
+                materia.cursada.equivalentes.definir(par.getNombreMateria(),materia);
             }
         }
 
@@ -302,16 +302,17 @@ public class SistemaSIU {
 
         // Borra la materia en cada equivalencia
         //materiasdelacarrera es mas bien al reves, materia.(carrera de la materia)
-        
-        /*for (String nombreEquivalencia : materiaActual.cursada.equivalentes.obtenerElementos()) {
-            Materia materiaEquivalente 
-            Carrera carreraDeEquivalencia = materiaEquivalente.materiasDeLaCarrera;
-            carreraDeEquivalencia.getMaterias().borrar(nombreEquivalencia);
 
-        }*/
-        // Borra la materia en la Carrera de parametro de entrada
+        for (String nombreEquivalencia : materiaActual.cursada.equivalentes.claves()) { 
+            Materia materiaEquivalencia = materiaActual.cursada.equivalentes.obtener(nombreEquivalencia);
+            Carrera carreraDeEquivalencia = materiaEquivalencia.materiasDeLaCarrera;
+            carreraDeEquivalencia.getMaterias().borrar(nombreEquivalencia);
+        }
+
+        //Innecesario, la borra arriba
+        /* // Borra la materia en la Carrera de parametro de entrada
         carreraActual.getMaterias().borrar(materia); 
-        System.out.println(materiaActual.cursada.equivalentes.toString());
+        System.out.println(materiaActual.cursada.equivalentes.toString()); */
     }
 
     /**
