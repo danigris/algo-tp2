@@ -257,24 +257,22 @@ public class SistemaSIU {
     }
 
     /**
-     * Este método cierra una materia y desinscribe a sus estudiantes
-     * para cada carrera que la tenga 
+     * Cierro una materia específica en todas las carreras debido a la falta de docentes
      *
-     * Complejidad: O(|c| + |m| + Σ |n| + E_m) para todos los n en N_m, 
+     * Complejidad: O(|c| + |m| + Σ(n∈Nm) |n|  + E_m)
      * donde |c| es la longitud del nombre de la carrera, |m| es la longitud 
-     * del nombre de la materia, Σ |n| es el largo del conjunto de nombres de la materia m
+     * del nombre de la materia, Σ(n∈Nm) |n| es el largo del conjunto de nombres de la materia m
      * y E
      * 
      * - Recorrer el trie de la Carrera: O(|c|) 
      * - Recorrer el trie de la Materia: O(|m|) 
-* - Recorrer  O(Σ |n|) !!! falta ver que se recorre
+     * - Registrar todas las materias equivalentes, donde Nm es el conjunto de nombres
+     *  de materias equivalentes: O(Σ(n∈Nm) |n|) 
      * - Reducir en 1 la cantidad de inscripciones de los estudiantes que estaban 
      * inscriptos a la materia: O(E_m)
-* - El resto son operaciones con complejidad O(1) !!! por ahora no hay ninguna con O(1)
      *
      * @param materia el nombre de la materia
      * @param carrera el nombre de la carrera
-     * @return true si la cantidad de estudiantes excede el cupo, false en caso contrario
      */
     public void cerrarMateria(String materia, String carrera) {
         Carrera carreraActual = sistema.obtener(carrera);
